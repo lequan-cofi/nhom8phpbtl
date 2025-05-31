@@ -1,0 +1,2874 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    position: relative;
+    background-color: #f7f4f4;
+    overflow-x: hidden; /* Prevent horizontal scrollbars from overly wide content before it adjusts */
+}
+
+.overlay {
+    display: none;
+    position: absolute; /* Consider fixed if it should cover viewport during sidebar hover */
+    width: 100%;
+    height: 100000vh; /* This height seems excessive, consider 100vh or 100% based on parent */
+    z-index: 86;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+ul {
+    list-style-type: none;
+}
+
+a {
+    text-decoration: none;
+    font-weight: normal; /* Bỏ in đậm */
+    color: black;
+}
+
+a:hover,
+a:active,
+a:focus {
+    outline: none;
+    text-decoration: none;
+}
+
+/*START SIDE BAR*/
+
+#sidebar {
+    height: 100%;
+    position: fixed;
+    width: 58px;
+    border-right: 1px solid #eeeeee;
+    background-color: #fff;
+    z-index: 90;
+    transition-duration: 300ms;
+}
+
+#sidebar .subnav {
+    position: absolute;
+    display: none;
+    top: 0;
+    left: 100%;
+    width: 270px;
+    height: 100%;
+    background-color: #fff;
+    z-index: -1; /* Should be higher than sidebar if it's a sub-menu, or sibling z-index managed carefully */
+    padding-top: 20px;
+    border-left: 1px solid #ccc;
+    border-radius: 0 10px 10px 0;
+}
+
+#sidebar .subnav li {
+    margin: 0;
+    padding-top: 14px;
+    color: #b6b5b5;
+}
+
+#sidebar .subnav .first-item {
+    text-transform: uppercase;
+    color: #000;
+}
+
+#sidebar .subnav .line {
+    border-bottom: 1px solid #ccc;
+    margin: 30px 10px 20px 5px;
+}
+
+#sidebar a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #000;
+}
+
+#sidebar li {
+    margin-top: 25px;
+    padding-left: 8px;
+    width: 100%;
+    font-size: 16px;
+    /* width: 110%; remove this, it causes overflow */
+}
+
+#sidebar .first-child {
+    background-color: #2761e7;
+    border-radius: 25px;
+    padding: 8px 8px 8px 9px; /* padding: 8px; is simpler if all sides are same */
+    width: 90%;
+}
+
+#sidebar .first-child .nav-text,
+.ti-menu { /* This global .ti-menu might conflict, better to scope it: #sidebar .ti-menu */
+    color: #fff;
+}
+
+#sidebar ul {
+    padding: 0 8px 0 10px;
+}
+
+#sidebar i {
+    font-size: 20px;
+}
+
+#sidebar .nav-text {
+    position: absolute;
+    left: 60px;
+    display: none;
+    white-space: nowrap; /* Prevent text from wrapping if sidebar expands */
+}
+
+/*HOVER*/
+
+#sidebar li:hover .subnav {
+    display: block;
+}
+
+#sidebar .first-child:hover .nav-text {
+    color: #fff !important;
+}
+
+#sidebar:hover {
+    width: 200px;
+}
+
+/* This makes the overlay appear next to the sidebar, not over the main content.
+   If it's meant to dim the main content, .overlay needs to be a sibling of #main-content area.
+*/
+#sidebar:hover + .overlay {
+    display: block;
+}
+
+#sidebar:hover .nav-text {
+    display: block;
+}
+
+#sidebar li:hover .nav-text {
+    color: #1c61e7;
+    cursor: pointer;
+}
+
+#sidebar .laptop:hover .subnav {
+    display: block;
+}
+
+#sidebar .subnav li:hover {
+    color: #1c61e7;
+    cursor: pointer;
+}
+
+/*End hover*/
+
+/*END SIDE BAR*/
+
+/*START HEADER*/
+
+#header {
+    display: flex;
+    /* justify-content: center; Let content determine spacing, or use space-between */
+    align-items: center;
+    height: 80px;
+    /* text-align: center; Not needed for flex container */
+    margin-left: 58px; /* Adjust if sidebar width changes or for responsive */
+    background-color: #fff;
+    padding: 0 20px; /* Add some padding */
+}
+
+#header .logo {
+    margin-top: 20px; /* Or align with flex: align-self: center */
+    width: auto;
+    flex-shrink: 0; /* Prevent logo from shrinking */
+}
+
+#header .search-bar {
+    display: flex; /* Already flex */
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 1px solid #dfd6d6;
+    border-radius: 60px;
+    width: 800px; /* This will be made responsive */
+    max-width: 100%; /* Ensure it doesn't overflow its parent */
+    height: 46px;
+    margin: 17px 20px 0; /* Adjust margin for smaller screens */
+    flex-grow: 1; /* Allow search bar to take available space */
+    min-width: 200px; /* Prevent it from becoming too small */
+}
+
+.search-bar input {
+    background: transparent;
+    border: 0;
+    flex: 1;
+    font-size: 14px;
+    outline: none;
+    padding-left: 20px;
+}
+
+.search-bar button .ti-search {
+    width: 25px;
+}
+
+.search-bar button {
+    background-color: #2761e7;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    color: #fff;
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+    margin: 3px;
+    flex-shrink: 0; /* Prevent button from shrinking */
+}
+
+#header .subnav {
+    margin: 20px 0 0 20px; /* Or align with flex: align-self: center */
+    display: flex; /* Use flex for horizontal alignment of items */
+    align-items: center;
+    flex-shrink: 0;
+}
+
+#header .subnav li {
+    display: inline-block; /* Not needed if parent is flex */
+    padding-left: 15px; /* Reduced padding */
+    text-align: center;
+}
+
+#header .subnav li:first-child {
+    padding-left: 0;
+}
+
+#header .subnav i {
+    font-size: 24px; /* Slightly reduced */
+    color: #000;
+}
+
+#header .subnav p {
+    font-size: 12px; /* Slightly reduced */
+    font-weight: 600;
+    line-height: 1.3;
+    color: #000;
+    margin-top: 2px;
+}
+
+#header .subnav .sub-text {
+    color: #1c61e7;
+    font-weight: normal;
+}
+
+/* Hiển thị dropdown khi hover */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/*END HEADER*/
+
+/*START NAV*/
+
+#nav {
+    background-color: #e6f2f9;
+    height: 60px;
+    margin-left: 58px; /* Adjust with sidebar */
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 85;
+    padding: 0 20px; /* Add padding */
+}
+
+#nav .subnav {
+    /* margin-top: 13px; Removed, align with flex */
+    margin-left: 20px; /* Reduced margin */
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+}
+
+#nav .block { /* What is this for? If it's a spacer, it might not be needed or needs % width */
+    height: 100%;
+    width: 250px; /* This fixed width might be an issue */
+    flex-shrink: 0;
+}
+
+#nav .subnav a {
+    color: #000;
+    padding: 0px 10px 0 10px; /* Reduced padding */
+    font-size: 13px; /* Slightly reduced */
+    font-weight: 500;
+}
+
+#nav .first-item a {
+    padding-left: 1px;
+}
+
+#nav li {
+    display: inline-block; /* Not needed if parent is flex */
+    padding-left: 15px; /* Reduced padding */
+    line-height: 45px;
+}
+
+#nav .subnav li {
+    border-radius: 25px;
+    padding-left: 5px;
+    /* margin-bottom: 4px; Align with flex */
+}
+
+#nav .first-item {
+    /* margin-top: 0px; Align with flex */
+    background-color: #fff;
+}
+
+#nav .first-item li {
+    /* margin-bottom: 0px !important; Align with flex */
+}
+
+#nav .ti-menu {
+    background-color: #2761e7;
+    border-radius: 50%;
+    display: inline-block;
+    color: #fff;
+    font-size: 20px;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    /* margin-top: 4px; Align with flex */
+}
+
+/*START NAV-2*/
+
+#nav .subnav-2 {
+    /* margin-top: 13px; Align with flex */
+    margin-left: 30px; /* Reduced margin */
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+#nav .subnav-2 li {
+    width: auto; /* Let content define width */
+    height: 40px;
+    /* margin-bottom: 5px; Align with flex */
+    margin-right: 5px; /* Add some spacing */
+}
+
+#nav .subnav-2 a {
+    display: block;
+    width: 40px; /* Reduced size */
+    height: 40px; /* Reduced size */
+    background-color: #fff;
+    border-radius: 50%;
+    color: #000;
+    display: flex; /* For icon centering */
+    align-items: center; /* For icon centering */
+    justify-content: center; /* For icon centering */
+}
+
+#nav .subnav-2 i {
+    padding-top: 0; /* Removed, centered by flex on <a> */
+    /* display: flex; Not needed here */
+    /* justify-content: center; Not needed here */
+}
+
+#nav .subnav-2 .last-item {
+    color: #fff;
+    background-color: #2761e7;
+}
+
+/*END SUBNAV-2*/
+
+/*HOVER*/
+#nav .subnav .item:hover {
+    background-color: #b3c7f5;
+    transition: 0.3s;
+}
+
+#nav .subnav .item:hover a {
+    color: #1c61e7;
+}
+/*END NAV*/
+
+/*START CONTENT common styles */
+.main-content-area { /* Helper class for sections */
+    margin-left: 78px; /* sidebar width + some padding */
+    margin-right: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    max-width: 100%;
+}
+
+/*START CONTENT*/
+
+/*START LEFT-ITEM*/
+#content {
+    margin: 20px 20px 20px 85px; /* Original: Keep for larger screens if needed */
+    position: relative;
+    display: flex;
+    flex-wrap: wrap; /* Allow items to wrap */
+}
+
+.img-1 { /* This seems to be a standalone image, ensure it's responsive */
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 217px; /* This is very specific, might need adjustment */
+    max-width: 100%;
+    height: auto;
+}
+
+#content .left {
+    width: 100%; /* Default to full width, adjust in media query for side-by-side */
+    max-width: 675px; /* Keep max width from original design */
+    margin-left: 0; /* Removed fixed margin, handle spacing with flex gap or parent padding */
+    margin-bottom: 20px; /* Add space when items stack */
+    height: 460px;
+    border-radius: 12px;
+    background-image: linear-gradient(to right, #33001b, #ff0084);
+}
+
+#content .left .text-content {
+    width: auto; /* Let it be defined by parent .left */
+    max-width: 100%;
+    position: absolute; /* Be careful with absolute positioning in responsive layouts */
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%); /* Center it if parent is position: relative */
+    text-align: center;
+    /* justify-content: center; Not for absolute */
+    padding: 0 15px; /* Add some padding */
+}
+
+#content .left .text-content .text-heading {
+    color: #fff;
+    font-size: 30px; /* Reduced */
+    height: auto; /* Let content define height */
+}
+
+.text-description2 { /* This class name is very similar to text-description */
+    color: #fff;
+    font-size: 14px; /* Reduced */
+    height: auto;
+    padding-top: 5px;
+}
+
+#content .left .text-content .text-description {
+    color: #fff;
+    font-size: 14px; /* Reduced */
+    height: auto;
+    padding-top: 5px;
+}
+
+#content .button-1 {
+    padding-top: 10px;
+}
+
+#content .button-1 button {
+    border: none;
+    border-radius: 5px;
+    width: 110.55px;
+    height: 42px;
+    background-color: #2761e7;
+    color: #fff;
+    font-size: 13px;
+}
+
+#content .left2 { /* This seems like an unused or misplaced class */
+    margin: 20px 20px 20px 85px;
+}
+
+/*START RIGHT-ITEM*/
+
+#content .right {
+    margin-left: 0; /* Removed fixed margin, handle with flex gap or media query */
+    width: 100%; /* Default to full width */
+    max-width: 675px; /* Keep max width from original design */
+}
+
+.img-2 {
+    float: right; /* Floating can be tricky in responsive, consider flex for layout */
+    padding-right: 10px;
+    transition: 0.6s;
+    max-width: 40%; /* Example, adjust as needed */
+    height: auto;
+}
+
+.img-3 {
+    margin-top: 5px;
+    transition: 0.6s;
+    max-width: 100%; /* General rule for images in these blocks */
+    height: auto;
+}
+
+#content .right .first-right {
+    width: 100%; /* Make it responsive */
+    height: auto; /* Adjust height or use min-height */
+    min-height: 277px;
+    background: linear-gradient(
+        135deg,
+        rgb(152, 150, 240) 0%,
+        rgb(255, 206, 236) 100%
+    );
+    border-radius: 12px;
+    position: relative; /* Good for an inner text-content */
+    padding: 20px; /* Add padding */
+}
+
+#content .first-right .button-2 { /* Naming is a bit generic, consider BEM */
+    padding-top: 10px;
+}
+
+#content .button-2 button {
+    border: none;
+    border-radius: 5px;
+    width: 110.55px;
+    height: 42px;
+    background-color: #2761e7;
+    color: #fff;
+    font-size: 13px;
+}
+
+#content .first-right .text-content {
+    position: static; /* Changed from absolute for easier flow */
+    padding: 20px 0 0 0; /* Adjusted padding */
+}
+
+#content .first-right .text-heading {
+    font-size: 24px; /* Reduced */
+    color: #fff;
+}
+
+/*START SUB-RIGHT*/
+
+#content .subright {
+    display: flex;
+    flex-wrap: wrap; /* Allow sub-items to wrap */
+    gap: 20px; /* Add gap between items */
+    margin-top: 20px; /* Space from .first-right */
+}
+
+/* .img-3 styling is already present above */
+/* #content .subright .img-3 {
+    float: right;
+    z-index: 82;
+} */
+
+#content .subright .subright1,
+#content .subright .subright2 {
+    border-radius: 12px;
+    margin-top: 0; /* Removed, using gap on parent */
+    width: 100%; /* Default to full width on small screens */
+    max-width: 327.5px; /* Max width from original */
+    height: auto; /* Adjust height based on content or use min-height */
+    min-height: 163px;
+    padding: 20px; /* Add padding */
+    display: flex; /* To better control inner content and image */
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#content .subright .subright1 {
+    background-image: linear-gradient(to left, #decba4, #3e5151);
+}
+
+#content .subright .subright2 {
+    background: linear-gradient(
+        135deg,
+        rgba(255, 105, 0, 1) 0%,
+        rgb(207, 46, 46) 100%
+    );
+}
+
+#content .subright .text-content { /* This is inside subright1/2 */
+    width: auto; /* Let it take available width */
+    height: auto;
+    padding: 0; /* Padding is on parent now */
+}
+
+#content .subright .text-heading {
+    color: #fff;
+    height: auto;
+    font-size: 16px; /* Reduced */
+}
+
+#content .subright .text-description {
+    font-size: 14px; /* Reduced */
+    color: #fff;
+    padding: 10px 0 15px 0;
+}
+
+#content .button-3 button {
+    color: #000;
+    background-color: #fff;
+}
+
+/*HOVER*/
+
+#content button:hover {
+    transition: 0.3s;
+    background-color: #1755d1;
+    cursor: pointer;
+}
+
+#content .button-3 button:hover {
+    transition: 0.3s;
+    background-color: #dedada;
+    cursor: pointer;
+}
+
+#content .first-right:hover .img-2 {
+    /* transform: scale(1.05); Example hover effect */
+    /* height: 270px; Avoid fixed height changes on hover for responsive images */
+    /* width: 270px;  Avoid fixed width changes on hover for responsive images */
+}
+
+#content .subright1:hover .img-3,
+#content .subright2:hover .img-3 {
+    /* transform: scale(1.05); */
+    /* width: 170px; */
+    /* height: 170px; */
+}
+
+/*END CONTENT*/
+
+/*START  LIST-PRODUCTS*/
+#list-product {
+    margin-left: 85px; /* Original margin */
+    margin-top: 60px;
+    padding: 0 15px; /* Add some horizontal padding */
+}
+
+#list-product a {
+    color: #000;
+}
+
+#list-product .text-heading {
+    padding-top: 10px;
+    margin-bottom: 30px;
+    font-size: 22px; /* Reduced */
+    font-weight: 600;
+    width: auto; /* Let content define width */
+    height: auto;
+}
+
+#list-product .product { /* This ul should be flex or grid */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Space between product items */
+    justify-content: center; /* Center items if they don't fill the row */
+}
+
+#list-product .product li {
+    display: inline-block; /* Not needed if parent is flex/grid */
+    /* justify-content: center; Not for li */
+    width: 196.56px; /* This can be a max-width, or use flex-basis */
+    flex: 0 1 196px; /* Flex-grow, flex-shrink, flex-basis */
+    height: auto; /* Let content define height */
+    /* padding: 0 10px 0 10px; Use gap on parent */
+    background-color: #fff; /* Move from .img-wrapper if li is the card */
+    border-radius: 12px; /* Move from .img-wrapper */
+    overflow: hidden; /* If images scale */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center content like text below image */
+    padding: 10px;
+}
+
+#list-product .img-wrapper {
+    /* background-color: #fff; Moved to li */
+    /* border-radius: 12px; Moved to li */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 10px; /* Padding around image */
+}
+
+#list-product .img-wrapper img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px; /* Optional: if image itself needs rounding */
+}
+
+
+#list-product .hover-mask { /* Is this used? If so, position it relative to li */
+    padding-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#list-product .more-products {
+    color: #848484;
+    padding-top: 30px; /* Reduced */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    clear: both; /* If using floats, though flex is better */
+}
+
+img {
+    transition: transform 0.6s ease;
+    max-width: 100%; /* General rule for images */
+    height: auto;    /* General rule for images */
+}
+
+/*START PRODUCT HOVER*/
+#list-product li:hover img {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+}
+/*END PRODUCT HOVER*/
+
+/*END  LIST-PRODUCTS*/
+
+/*START SALES*/
+#sales {
+    width: auto; /* Make it responsive */
+    max-width: 1390px; /* Original width as max */
+    /* height: 640.15px; Let content define height or use min-height */
+    margin-left: 85px; /* Original margin */
+    margin-top: 60px;
+    padding: 0 15px; /* Add horizontal padding */
+}
+
+#sales .list-sales { /* Assuming this is the ul for sales items */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start; /* Or center */
+}
+
+
+#sales .wrapper-product { /* This is likely the card for each product */
+    position: relative;
+    width: 100%; /* Make it take the space given by flex parent (li or direct child of .list-sales) */
+    max-width: 263px; /* Original as max */
+    background-color: #fff;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+#sales .label {
+    position: absolute;
+    top: 15px; /* Adjusted for padding */
+    left: 15px; /* Adjusted for padding */
+}
+
+#sales .label span {
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+    display: flex;
+    width: auto; /* Adjust to content */
+    padding: 3px 8px;
+    height: 24.4px;
+    background-color: #e22d2d;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    /* margin: 25px 30px; Margin is high, handled by position */
+}
+
+#sales .product-button {
+    position: absolute;
+    top: 15px; /* Adjusted */
+    right: 15px; /* Adjusted */
+    /* margin-right: 25px; */
+    /* margin-top: 25px; */
+    border-radius: 12px;
+    box-shadow: 1px 1px #eeeded;
+    background-color: #fff;
+    opacity: 0;
+    transition-property: all;
+    transition-duration: 0.4s;
+    transform: translateX(100%);
+    z-index: 5; /* Ensure it's above other elements in the card */
+}
+
+#sales .product-button .compare-button,
+#sales .product-button .search-button,
+#sales .product-button .love-button {
+    width: 40px; /* Reduced */
+    height: 35px; /* Reduced */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: lighter;
+}
+
+#sales .last-label { /* For multiple labels */
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px; /* Space between labels */
+}
+
+#sales .last-label .first-span,
+#sales .last-label .second-span {
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+    display: flex;
+    width: auto; /* Fit content */
+    padding: 3px 8px;
+    height: 24.4px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    /* margin: 25px 30px 10px 30px; Handled by parent and gap */
+}
+
+#sales .last-label .first-span { background-color: #e22d2d; }
+#sales .last-label .second-span { background-color: #438e44; }
+
+
+#sales .wrapper-product img {
+    max-width: 80%; /* Control image size within the card padding */
+    height: auto; 
+    border-radius: 12px;
+    margin-top: 10px;
+    margin-bottom: 10px; /* Add space below image */
+}
+
+#sales .text-heading { /* This is likely title for the whole #sales section */
+    padding-top: 10px;
+    margin-bottom: 30px;
+    font-size: 22px; /* Reduced */
+    font-weight: 600;
+    width: auto;
+    height: auto;
+}
+
+#sales li { /* This is the product item container in the flex list */
+    display: flex; /* Changed from inline-block */
+    flex: 0 1 263px; /* Allow items to grow/shrink with a basis of 263px */
+    /* margin-right: 10px; Use gap on parent ul */
+}
+
+#sales .product-element-bottom {
+    margin-top: 10px;
+    text-align: center; /* Center text elements */
+    width: 100%;
+}
+
+#sales .product-title {
+    font-size: 14px; /* Reduced */
+    color: #000;
+    margin-bottom: 8px; /* Reduced */
+}
+
+#sales .product-cats {
+    font-size: 13px; /* Reduced */
+    color: #a5a5a5;
+    margin-bottom: 8px; /* Reduced */
+}
+
+#sales .product-rating {
+    margin-bottom: 8px; /* Reduced */
+}
+
+#sales .product-in-stock {
+    color: #000;
+    margin-bottom: 8px; /* Reduced */
+    font-size: 13px;
+}
+
+#sales .product-price {
+    color: #1c61e7;
+    font-weight: 600;
+    font-size: 15px; /* Reduced */
+    margin-bottom: 10px; /* Reduced */
+}
+
+#sales .product-code {
+    margin-top: 10px; /* Reduced */
+    margin-bottom: 15px; /* Reduced */
+    display: flex;
+    justify-content: center; /* Center code */
+    font-size: 12px;
+}
+
+#sales .product-code .product-name {
+    color: #333;
+}
+
+#sales .product-code .code {
+    color: #a5a5a5;
+    margin-left: 5px;
+}
+
+/* #sales .wrapper-product .new-item { This class usage is unclear here, might be from another section
+    margin-top: 0;
+} */
+
+/*START SALES HOVER*/
+#sales .list-sales li:hover .product-button {
+    opacity: 1;
+    transform: translateX(0);
+}
+/*END SALES HOVER*/
+
+/*END SALES*/
+
+
+/* START SAN PHAM MOI  */
+
+#new-product {
+    /* height: 600px; Let content define height */
+    margin-left: 85px; /* Original margin */
+    margin-top: 90px;
+    position: relative;
+    display: flex;
+    flex-wrap: wrap; /* Allow items to wrap */
+    gap: 20px; /* Space between left and right sections */
+    padding: 0 15px;
+}
+
+#new-product .new-iphone { /* This is the left part */
+    margin-top: 0; /* Use gap from parent */
+    width: 100%; /* Default full width */
+    max-width: 327.5px; /* Original as max */
+    /* height: 545px; Let image define height or use aspect ratio */
+    overflow: hidden;
+    border-radius: 12px;
+    position: relative; /* For .new-item text overlay */
+}
+
+#new-product .new-iphone img {
+    width: 100%; /* Make image responsive within its container */
+    height: auto; /* Maintain aspect ratio */
+    /* object-fit: cover; Only if you have fixed height on .new-iphone and want to fill */
+    transition: all 0.6s;
+}
+
+#new-product .new-item { /* Text overlay on .new-iphone */
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Center content vertically */
+    width: 100%;
+    /* margin-top: 40px; Not needed for absolute full overlay */
+    padding: 20px;
+    text-align: center;
+    background-color: rgba(0,0,0,0.3); /* Optional: dark overlay for text readability */
+}
+
+#new-product .new-item .text-description {
+    font-size: 13px; /* Reduced */
+    color: #ffffffcc;
+    letter-spacing: 1px;
+}
+
+#new-product .new-item .text-heading {
+    margin-top: 20px; /* Adjusted from 130px */
+    font-size: 20px; /* Reduced */
+    color: #fff; /* Make it white for better contrast on image or overlay */
+    padding: 10px 0;
+    font-weight: 700;
+}
+
+#new-product .new-item .button-2 {
+    padding-top: 10px;
+}
+
+#new-product .new-item button {
+    border: none;
+    border-radius: 5px;
+    width: 110.55px;
+    height: 42px;
+    background-color: #2761e7;
+    color: #fff;
+    font-size: 13px;
+}
+
+/* START HOVER for .new-iphone (left part) */
+#new-product .new-iphone:hover img { /* Target image inside .new-iphone */
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+}
+
+#new-product .new-item button:hover { /* Button inside the overlay */
+    transition: 0.3s;
+    background-color: #1755d1;
+    cursor: pointer;
+}
+/* END HOVER */
+
+#new-product .right { /* This is the right part with product list */
+    margin-left: 0; /* Use gap from parent */
+    flex: 1; /* Allow it to take remaining space if .new-iphone has max-width */
+    min-width: 300px; /* Prevent it from getting too squished */
+}
+
+#new-product .right h2 { /* Title for the product list "New Products" */
+    font-size: 22px; /* Reduced */
+    margin-bottom: 20px;
+}
+
+
+#new-product .list-new-product { /* This is the ul */
+    /* margin-top: 20px; Handled by h2 margin or gap */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+
+#new-product .right li { /* Product item in the list */
+    width: auto; /* Let flex define width */
+    flex: 1 1 210px; /* Grow, shrink, basis. Adjust basis as needed */
+    max-width: 250px; /* Max width for each item, wrapper-product has 250px width */
+    /* display: inline-block; Not needed for flex children */
+    /* margin-right: 50px; Use gap on parent */
+    transition-property: transform, box-shadow; /* Combined transitions */
+    transition-duration: 200ms;
+    transition-timing-function: ease;
+    transition-delay: 0s;
+    border-radius: 12px; /* Moved to wrapper if that's the card */
+}
+
+
+#new-product .wrapper-product { /* The card itself */
+    position: relative;
+    width: 100%; /* Take full width of li */
+    background-color: #fff;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* justify-content: center; Content may not always be centered if details appear */
+    padding: 15px;
+    box-sizing: border-box;
+    transition-property: all; /* Or specific properties like transform, box-shadow */
+    transition-duration: 200ms;
+    transition-timing-function: ease;
+    transition-delay: 0s;
+    height: 100%; /* Make all cards in a row same height if needed */
+}
+
+#new-product .wrapper-product img {
+    max-width: 80%; 
+    height: auto; 
+    border-radius: 12px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#new-product .label,
+#new-product .product-button,
+#new-product .last-label,
+#new-product .product-element-bottom,
+#new-product .product-title,
+#new-product .product-cats,
+#new-product .product-rating,
+#new-product .product-in-stock,
+#new-product .product-price,
+#new-product .product-code {
+    /* Styling for these elements can be similar to #sales section */
+    /* For brevity, assuming styles from #sales apply or would be duplicated and tweaked */
+}
+
+/* Copy relevant styles from #sales product card, e.g.: */
+#new-product .label { position: absolute; top: 15px; left: 15px; }
+#new-product .label span { font-size: 12px; font-weight: 600; color: #fff; display: flex; width: auto; padding: 3px 8px; height: 24.4px; background-color: #e22d2d; align-items: center; justify-content: center; border-radius: 12px;}
+#new-product .product-button { position: absolute; top: 15px; right: 15px; border-radius: 12px; box-shadow: 1px 1px #eeeded; background-color: #fff; opacity: 0; transition: all 0.4s; transform: translateX(100%); z-index: 5;}
+#new-product .product-button > div { width: 40px; height: 35px; display: flex; align-items: center; justify-content: center; font-weight: lighter;} /* Assuming compare, search, love buttons are divs */
+#new-product .product-element-bottom { margin-top: auto; text-align: center; width: 100%; padding-top: 10px; } /* 'margin-top: auto' pushes to bottom */
+#new-product .product-title { font-size: 14px; color: #000; margin-bottom: 8px; }
+#new-product .product-cats { font-size: 13px; color: #a5a5a5; margin-bottom: 8px; }
+#new-product .product-rating { margin-bottom: 8px; } /* Add actual rating stars here */
+#new-product .product-in-stock { color: #000; margin-bottom: 8px; font-size: 13px; }
+#new-product .product-price { color: #1c61e7; font-weight: 600; font-size: 15px; margin-bottom: 10px; }
+#new-product .product-code { margin-top: 10px; margin-bottom: 15px; display: flex; justify-content: center; font-size: 12px; }
+#new-product .product-code .code { margin-left: 5px; }
+
+
+#new-product .details {
+    color: #888888;
+    font-size: 13.5px;
+    display: none;
+    margin-bottom: 15px;
+    width: 100%; /* Take full width for text alignment */
+}
+
+#new-product hr {
+    border: none;
+    height: 1px;
+    background-color: #a5a5a5;
+    opacity: 0.3;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+/*START SAN PHAM MOI HOVER*/
+
+#new-product .list-new-product li:hover .product-button {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+#new-product .list-new-product li:hover .details {
+    display: block;
+}
+
+#new-product .list-new-product li:hover .wrapper-product {
+    /* box-shadow: 2px rgba(0, 0, 0, 0.2); duplicate */
+    transform: translateY(-5px);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+/* END SAN PHAM MOI HOVER */
+
+/* END SAN PHAM MOI  */
+
+/* START POSTER*/
+
+#poster {
+    border-radius: 12px;
+    margin-left: 85px; /* Original */
+    margin-top: 40px;
+    /* height: 601px; Let content define, or use min-height */
+    width: auto; /* Responsive width */
+    max-width: 1459px; /* Original as max */
+    background: #dae2f8; 
+    background: -webkit-linear-gradient(to right, #d6a4a4, #dae2f8);
+    background: linear-gradient(to right, #d6a4a4, #dae2f8);
+    padding: 30px 15px; /* Add padding */
+}
+
+#poster .main-content {
+    display: flex;
+    flex-wrap: wrap; /* Allow text and image to wrap */
+    justify-content: center; /* Center items */
+    align-items: center;
+    /* padding-top: 40px; Use padding on #poster */
+    gap: 20px;
+}
+
+#poster .main-content .text-content {
+    /* padding-top: 50px; Use gap */
+    /* padding-right: 20px; Use gap */
+    flex: 1; /* Allow text to take space */
+    min-width: 300px; /* Prevent it from getting too small */
+    text-align: center; /* Center text for smaller screens when stacked */
+}
+
+#poster .main-content .img-content { /* Assuming there is an image container */
+    flex: 1;
+    min-width: 300px;
+    text-align: center; /* Center image if it's smaller than flex item */
+}
+
+#poster .main-content .img-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+
+#poster .main-content .text-content .text-heading {
+    font-size: 36px; /* Reduced */
+    height: auto;
+    line-height: 1.2;
+}
+
+#poster .main-content .text-content .text-description {
+    font-size: 18px; /* Reduced */
+    height: auto;
+    padding-bottom: 30px; /* Reduced */
+}
+
+#poster .main-content .text-content .add-product {
+    height: 42px;
+    background-color: #2761e7;
+    width: 140.6px;
+    color: #fff;
+    display: inline-flex; /* For centering text inside if needed */
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+/* #poster .block { This class is empty, maybe a spacer?
+    width: 120px;
+} */
+
+#poster .list-item { /* This seems to be a row of items below the main content */
+    margin-top: 30px; /* Reduced */
+    /* padding-left: 45px; Use overall padding or justify content */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Center items */
+    gap: 20px; /* Space between items */
+}
+
+#poster .list-item .item {
+    width: 100%; /* Default full width */
+    max-width: 258px; /* Original as max */
+    height: auto; /* min-height: 110px; */
+    background-color: #fff;
+    /* margin-right: 20px; Use gap */
+    display: flex;
+    align-items: center; /* Align image and text */
+    border-radius: 12px;
+    padding: 10px;
+}
+
+#poster .item img {
+    /* margin-top: 10px; Align with flex */
+    height: 70px; /* Reduced */
+    width: 70px; /* Added for consistency */
+    object-fit: contain; /* Or cover */
+    border-radius: 12px;
+    margin-right: 15px; /* Space between image and text */
+}
+
+#poster .item .text-content {
+    font-size: 14px; /* Reduced */
+    /* padding-top: 20px; Align with flex */
+    /* padding-left: 25px; Use margin on img */
+    flex: 1; /* Allow text content to take remaining space */
+}
+
+#poster .item .text-heading {
+    font-weight: 600;
+    color: #000;
+    transition: all 0.2s ease;
+    font-size: 15px; /* Consistent with .item .text-content */
+}
+
+#poster .item .rating {
+    padding: 5px 0; /* Reduced */
+}
+
+#poster .item .rating i {
+    width: 12px;
+    /* Add color for stars */
+}
+
+#poster .item .price {
+    font-weight: 600;
+    color: #1c61e7;
+    font-size: 14px;
+}
+
+/* START POSTER HOVER */
+
+#poster .item .text-heading:hover {
+    opacity: 0.7; /* Instead of 0.3 which might be too faint */
+    color: #1c61e7; /* Example hover color */
+}
+
+#poster .main-content .text-content .add-product:hover {
+    background-color: #1755d1;
+    cursor: pointer;
+}
+
+/* END POSTER HOVER */
+/*END POSTER*/
+
+/* START MICROSOFT */
+#microsoft {
+    margin-left: 85px; /* Original */
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap; /* Allow sections to wrap */
+    gap: 20px;
+    padding: 0 15px;
+}
+
+#microsoft .left-column { /* Create a wrapper for .top and .bot if they are one column */
+    flex: 2; /* Takes more space */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 300px; /* Minimum width before wrapping */
+}
+
+#microsoft .top {
+    width: 100%; /* Take full width of its column */
+    max-width: 1022.5px; /* Original as max */
+    /* height: 403.6px; Let content define height */
+    background-color: #fff;
+    display: flex;
+    flex-wrap: wrap; /* Allow image and text to wrap */
+    align-items: center;
+    border-radius: 12px;
+    padding: 20px;
+    gap: 20px;
+}
+
+#microsoft .top .img-content {
+    /* padding-top: 17.3px; Align with flex */
+    /* padding-left: 50px; Use gap */
+    flex: 1; /* Adjust flex basis as needed */
+    text-align: center;
+    min-width: 200px; /* Min width for image container */
+}
+
+#microsoft .top .img-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+#microsoft .top .text-content {
+    /* padding-top: 20px; Use gap/padding on parent */
+    /* padding-left: 30px; Use gap/padding on parent */
+    flex: 2; /* Text takes more space */
+    min-width: 250px; /* Min width for text content */
+}
+
+#microsoft .top .text-heading {
+    font-size: 32px; /* Reduced */
+    font-weight: 500;
+    letter-spacing: 1.4;
+    line-height: 1.2;
+}
+
+#microsoft .top .text-description {
+    font-size: 14px; /* Reduced */
+    padding-top: 15px; /* Reduced */
+}
+
+#microsoft .list-item { /* This is for the small icon links */
+    display: flex;
+    flex-wrap: wrap; /* Allow items to wrap */
+    padding-top: 15px; /* Reduced */
+    gap: 10px; /* Space between items */
+}
+
+#microsoft .list-item .item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    /* width: 108.25px; Let content or padding define width */
+    padding: 8px 12px;
+    height: 36px;
+    background-color: #f3f3f3;
+    /* margin-right: 5px; Use gap */
+    transition-duration: 0.2s;
+}
+
+#microsoft .list-item a { /* The <a> tag is the flex container */
+    display: flex;
+    align-items: center;
+}
+
+#microsoft .list-item a img { /* Assuming icons might be images */
+    margin-right: 5px;
+    width: 16px;
+    height: 16px;
+}
+
+#microsoft .list-item p {
+    font-size: 12px;
+    font-weight: 500;
+    /* padding-left: 2px; Already handled by icon margin */
+}
+
+#microsoft .list-item .item:hover {
+    background-color: #dddddd;
+}
+
+#microsoft .bot { /* Container for bottom boxes */
+    padding-top: 0; /* Use gap from parent .left-column */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+#microsoft .bot .box {
+    /* width: 327.49px; Use flex-basis */
+    flex: 1 1 300px; /* Grow, shrink, basis. Adjust basis for number of boxes */
+    max-width: 327.49px;
+    /* height: 183px; Use aspect ratio or min-height */
+    min-height: 183px;
+    /* margin-right: 20px; Use gap */
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+}
+
+#microsoft .box img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover; /* Good for fixed size box */
+    transition-duration: 0.6s;
+}
+
+#microsoft .box .text-content {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0; /* Cover whole box */
+    padding: 20px; /* Reduced */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Push content to bottom */
+    align-items: center; /* Center horizontally */
+    text-align: center;
+    background: rgba(0,0,0,0.3); /* Overlay for readability */
+}
+
+#microsoft .box .text-heading {
+    /* margin-top: 49px; Position with flex */
+    /* margin-left: 28px; Position with flex */
+    font-size: 24px; /* Reduced */
+    font-weight: 700;
+    color: #fff; /* Changed for overlay */
+    line-height: 1.1; 
+    background: transparent; /* Removed background, using overlay on parent */
+    /* display: inline-block; */
+    padding: 0; 
+}
+
+#microsoft .box .text-description {
+    font-size: 13px; /* Reduced */
+    color: #ffffffcc;
+    padding: 10px 0; /* Reduced */
+}
+
+#microsoft .box .add-product { /* Shop now button */
+    /* margin-left: 87px; Center with auto margins or flex on parent */
+    margin: 10px auto 0;
+    width: auto; /* Fit content */
+    padding: 0 15px;
+    height: 36px;
+    background-color: #fff;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 500;
+    transition-duration: 0.3s;
+    color: #2761e7; /* Add text color */
+}
+
+#microsoft .right { /* This is the product card column */
+    /* width: 325.52px; Use flex basis */
+    flex: 1; /* Takes less space than left column */
+    min-width: 280px; /* Minimum width */
+    /* height: 588.67px; Let content define */
+    /* margin-bottom: 10000px; This is extremely large, remove. */
+}
+
+#microsoft .wrapper-product { /* The product card */
+    position: relative;
+    width: 100%;
+    background-color: #fff;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* justify-content: center; Only if all content is always centered */
+    padding: 15px;
+    box-sizing: border-box;
+    /* Styles for label, product-button, title etc. can be copied from #sales or #new-product */
+}
+
+/* Copy relevant product card styles from #sales / #new-product here for #microsoft .wrapper-product contents */
+#microsoft .wrapper-product img { max-width: 80%; height: auto; border-radius: 8px; margin: 10px 0; }
+#microsoft .label { position: absolute; top: 15px; left: 15px; }
+#microsoft .label span { font-size: 12px; font-weight: 600; color: #fff; display: flex; width: auto; padding: 3px 8px; height: 24.4px; background-color: #e22d2d; align-items: center; justify-content: center; border-radius: 12px;}
+#microsoft .product-button { position: absolute; top: 15px; right: 15px; border-radius: 12px; box-shadow: 1px 1px #eeeded; background-color: #fff; opacity: 0; transition: all 0.4s; transform: translateX(100%); z-index: 5;}
+#microsoft .product-button > div { width: 40px; height: 35px; display: flex; align-items: center; justify-content: center; font-weight: lighter;}
+#microsoft .product-title { font-size: 15px; color: #333333; padding-bottom: 10px; margin-top: 10px; text-align: center; }
+#microsoft .product-cats { color: #a5a5a5; padding-bottom: 10px; font-size: 13px; text-align: center; }
+#microsoft .product-rating { margin-bottom: 10px; text-align: center; } /* Add actual rating stars */
+#microsoft .product-in-stock { color: #333333; padding: 10px 0; font-size: 13px; text-align: center; }
+#microsoft .product-price { color: #1c61e7; font-weight: 600; font-size: 16px; text-align: center; }
+#microsoft .product-code { display: flex; padding-bottom: 15px; justify-content: center; font-size: 12px; }
+#microsoft .product-code .code { color: #a5a5a5; margin-left: 5px; }
+
+/* START HOVER for microsoft section */
+
+#microsoft .box:hover img {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+}
+
+#microsoft .box .add-product:hover {
+    background-color: #dedada;
+    cursor: pointer;
+}
+
+#microsoft .right .wrapper-product:hover .product-button { /* Target wrapper-product on hover */
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* END HOVER */
+/* END MICROSOFT */
+
+/* START SEEN */
+#seen {
+    margin: 60px 0 0 85px; /* Original */
+    padding: 0 15px; /* Add padding */
+}
+
+#seen .text-heading { /* Title for "Recently Seen" */
+    font-size: 22px; /* Reduced */
+    font-weight: 600;
+    margin-bottom: 20px; /* Add space below title */
+}
+
+#seen .list-item { /* The ul/div containing seen items */
+    display: flex;
+    flex-wrap: wrap; /* Allow items to wrap */
+    /* margin-top: 30px; Handled by title margin */
+    gap: 20px; /* Space between items */
+}
+
+#seen .item { /* Each seen product item */
+    /* width: 300px; Use flex-basis */
+    flex: 1 1 280px; /* Grow, shrink, basis */
+    max-width: 300px;
+    /* height: 101.5px; Let content define height */
+    min-height: 100px;
+    background-color: #fff;
+    display: flex;
+    padding: 15px;
+    /* margin-right: 20px; Use gap */
+    border-radius: 12px;
+    align-items: center; /* Vertically align image and text */
+}
+
+#seen .item img {
+    width: 70px; /* Fixed size for thumbnail */
+    height: 70px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 15px; /* Space between image and text */
+}
+
+#seen .text-content { /* Text part of the seen item */
+    /* padding-left: 10px; Use margin on image */
+    flex: 1; /* Allow text to take remaining space */
+}
+
+#seen .item .text-heading { /* Product name in seen item */
+    font-size: 14px; /* Reduced */
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+#seen .item .price {
+    margin-top: 5px;
+    color: #1c61e7;
+    font-weight: 600;
+    font-size: 14px;
+}
+/* END SEEN */
+
+/* START POST & POSTBLOG (they are very similar, combine rules where possible) */
+#post, #postblog {
+    margin: 50px 0 0 85px; /* Original */
+    padding: 0 15px; /* Add padding */
+}
+
+#postblog { margin-left: 50px; /* Original, if different needed */ }
+
+
+#post .text-heading,
+#postblog .text-heading { /* Section title */
+    font-size: 22px; /* Reduced */
+    font-weight: 600;
+    margin-bottom: 20px; /* Reduced */
+}
+
+#post .list-item,
+#postblog .list-item { /* Container for post cards */
+    display: flex;
+    flex-wrap: wrap;
+    position: relative; /* Why relative? Check if children use absolute relative to this */
+    gap: 20px; /* Space between post items */
+}
+
+#post .item,
+#postblog .item { /* Each post card */
+    /* width: 327.5px; Use flex-basis */
+    flex: 1 1 300px; /* Grow, shrink, basis */
+    max-width: 327.5px;
+    background-color: #fff;
+    border-radius: 12px;
+    /* margin-right: 20px; Use gap */
+    overflow: hidden; /* Ensure image hover scale doesn't break layout */
+    display: flex;
+    flex-direction: column;
+}
+
+#post .img-content,
+#postblog .img-content { /* Image container in post card */
+    width: 100%;
+    /* height: 202.5px; Use padding-top for aspect ratio or let image define */
+    aspect-ratio: 16 / 10; /* Example aspect ratio, adjust as needed */
+    overflow: hidden;
+    /* border-radius: 12px; Already on .item, if only top then border-top-left/right-radius */
+}
+
+#post .item img,
+#postblog .item img {
+    width: 100%;
+    height: 100%; /* Works with aspect-ratio on parent */
+    transition-duration: 0.6s;
+    object-fit: cover;
+}
+
+#post .item .text-content,
+#postblog .item .text-content { /* Text area in post card */
+    padding: 20px; /* Reduced */
+    flex-grow: 1; /* Allows this part to expand if card heights are unified */
+    display: flex;
+    flex-direction: column;
+}
+
+#post .item .sub-text,
+#postblog .item .sub-text { /* Date/author line */
+    margin-bottom: 8px; /* Reduced */
+    font-size: 12px; /* Reduced */
+    color: #a5a5a5;
+}
+
+#post .item .text-heading, /* Title of the post inside card */
+#postblog .item .text-heading { 
+    font-size: 16px; /* Reduced */
+    color: #333;
+    margin: 10px 0; /* Reduced vertical margin */
+    line-height: 1.3;
+}
+
+#post .item .text-description,
+#postblog .item .text-description { /* Excerpt */
+    font-size: 14px; /* Reduced */
+    color: #777;
+    margin: 10px 0; /* Reduced */
+    line-height: 1.5;
+    flex-grow: 1; /* Allows description to push "Read more" down */
+}
+
+#post .item a, /* Read more link */
+#postblog .item a {
+    display: block; /* Or inline-block */
+    font-size: 13px;
+    font-weight: 600;
+    color: #1c61e7;
+    margin: 15px 0 0; /* Margin top, remove bottom if .more is used */
+    /* margin-top: auto; /* Pushes "Read more" to the bottom of .text-content */
+}
+
+/* #post .item .more, #postblog .item .more { Redundant if Read More link is styled
+    position: absolute;
+    bottom: 0;
+} */
+
+/* START POST/POSTBLOG HOVER */
+#post .item:hover img,
+#postblog .item:hover img {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+}
+/* END POST/POSTBLOG HOVER */
+
+/* END POST / POSTBLOG */
+
+
+/* START ABOUT */
+#about {
+    margin: 40px 0 0 85px; /* Original */
+    padding: 30px; /* Increased padding */
+    /* width: 1370px; Use auto or max-width */
+    width: auto;
+    max-width: 1370px;
+    /* height: 316.4px; Let content define, or use max-height for toggle */
+    max-height: 250px; /* Initial max-height for "Read More" */
+    background-color: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    transition: max-height 0.5s ease-in-out; /* Transition for max-height */
+}
+
+#about.expanded { /* Class to toggle for showing more content */
+    max-height: 1000px; /* Large enough to show all content */
+}
+
+
+#about .text-heading {
+    color: #242424;
+    font-size: 22px; /* Reduced */
+    font-weight: 600;
+    margin-bottom: 15px; /* Add space */
+}
+
+#about .text-content {
+    /* margin-top: 20px; Handled by heading margin */
+    line-height: 1.6; /* Increased for readability */
+    color: #777;
+    font-size: 14px; /* Reduced */
+}
+
+#about #overlay-2 { /* Fade out effect for "Read more" */
+    width: 100%;
+    height: 60px; /* Increased height for better fade */
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgb(255, 255, 255));
+    z-index: 1; /* Above text, below button */
+    pointer-events: none; /* Allow clicks to pass through to button if it's under */
+}
+
+#about.expanded #overlay-2 {
+    display: none; /* Hide overlay when expanded */
+}
+
+
+#about #more-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-around; /* Or center */
+    position: absolute;
+    bottom: 15px; /* Increased from bottom */
+    left: 50%; /* Center button */
+    transform: translateX(-50%); /* Center button */
+    width: auto; /* Fit content */
+    padding: 8px 20px; /* Adjusted padding */
+    height: 36px;
+    border: 1px solid #ccc; /* Add a border */
+    border-radius: 8px;
+    font-size: 12px;
+    color: #333; /* Darker color */
+    transition: 0.3s;
+    background-color: #fff; /* Ensure it's visible over gradient */
+    z-index: 2; /* Above overlay */
+    cursor: pointer;
+}
+
+/* START HOVER for ABOUT */
+#about #more-button:hover {
+    background-color: #e9e9e9; /* Slightly darker hover */
+    border-color: #bbb;
+    cursor: pointer;
+}
+/* END ABOUT */
+
+
+/**********************************/
+/********** Contact CSS ***********/
+/**********************************/
+.contact { /* This could be a full-width section or constrained */
+    position: relative;
+    padding: 60px 15px; /* Add horizontal padding */
+    margin-left: 58px; /* If it's part of main content area */
+}
+
+.contact .container { /* Assuming a .container class for centering content */
+    max-width: 1140px; /* Standard container width */
+    margin: 0 auto;
+    display: flex; /* For side-by-side layout of info and form */
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.contact .contact-info, .contact .form-container { /* Wrappers for the two columns */
+    flex: 1;
+    min-width: 300px; /* Minimum width before stacking */
+}
+
+
+.contact .contact-info .section-header h3,
+.contact .contact-info .section-header p {
+    text-align: left;
+}
+
+.contact .contact-info .section-header p {
+    font-weight: 400;
+}
+
+.contact .contact-info .section-header h3::after { /* Ensure .section-header defined this */
+    left: 0;
+}
+
+.contact .contact-info img {
+    max-width: 100%;
+    margin-bottom: 15px;
+    border-radius: 8px; /* Optional */
+}
+
+.contact .contact-info h4 {
+    margin-bottom: 10px;
+    color: #666666;
+    font-size: 15px; /* Reduced */
+    font-weight: 400;
+}
+
+.contact .contact-info h4 i {
+    color: #2761e7;
+    margin-right: 8px; /* Increased space */
+    width: 20px; /* For alignment */
+}
+
+.contact .social {
+    position: relative;
+    width: 100%;
+    margin-top: 20px; /* Space above social icons */
+}
+
+.contact .social a {
+    display: inline-flex; /* Use flex for icon centering */
+    align-items: center;
+    justify-content: center;
+    margin: 0 10px 10px 0; /* Keep bottom margin for wrapping */
+    width: 36px; /* Reduced */
+    height: 36px; /* Reduced */
+    /* padding: 3px 0; Not needed with flex */
+    text-align: center;
+    font-size: 18px; /* Reduced */
+    border: 1px solid #2761e7;
+    border-radius: 50%; /* Make them circular */
+}
+
+.contact .social a i {
+    color: #2761e7;
+    line-height: 1; /* Ensure icon is centered */
+}
+
+.contact .social a:hover {
+    background: #2761e7;
+}
+
+.contact .social a:hover i {
+    color: #ffffff;
+}
+
+.contact .form { /* This is the actual form element */
+    color: #666666;
+}
+
+/* @media (max-width: 767.98px) { Handled by flex-wrap on .contact .container
+    .contact .form-container { .form was here before
+        margin-bottom: 30px;
+    }
+} */
+
+.contact .form input,
+.contact .form textarea {
+    color: #666666;
+    font-size: 14px; /* Reduced */
+    padding: 12px 15px; /* Adjusted padding */
+    border: 1px solid #ddd; /* Softer border */
+    border-radius: 4px; /* Add some rounding */
+    box-shadow: none;
+    width: 100%; /* Make inputs full width of their container */
+    margin-bottom: 15px; /* Space between fields */
+}
+
+.contact .form textarea {
+    min-height: 120px; /* Give textarea some initial height */
+}
+
+.contact .form input:focus,
+.contact .form textarea:focus {
+    box-shadow: none;
+    border-color: #2761e7; /* Highlight on focus */
+}
+
+.contact .form button[type="submit"] {
+    padding: 10px 25px; /* Adjusted padding */
+    color: #fff; /* Text color for filled button */
+    letter-spacing: 1px;
+    transition: 0.3s;
+    cursor: pointer;
+    border-radius: 4px; /* Rounded corners */
+    border: 1px solid #2761e7;
+    background: #2761e7; /* Filled button by default */
+    font-size: 14px;
+}
+
+.contact .form button[type="submit"]:hover {
+    background: #1c5dd6; /* Darker shade on hover */
+    border-color: #1c5dd6;
+    color: #FFFFFF;
+}
+
+
+/* END CONTACT */
+
+
+#main-footer {
+    background-color: #fff;
+    margin-left: 58px; /* If sidebar is always present */
+    padding-top: 1px; /* To contain margins of children */
+}
+
+/*START FOOTER*/
+
+#footer { /* Top part of footer with addresses/contacts */
+    margin: 40px 40px 0 40px; /* Symmetrical horizontal margin */
+    padding: 30px 0; /* Use padding for top/bottom */
+    display: flex;
+    flex-wrap: wrap; /* Allow items to wrap */
+    justify-content: space-between; /* Distribute space */
+    border-bottom: 1px solid #dedada;
+    gap: 30px; /* Space between footer columns */
+}
+
+#footer .address { /* Each column in the #footer */
+    /* padding: 30px 0 40px 0; Use gap and parent padding */
+    flex: 1; /* Allow columns to share space */
+    min-width: 200px; /* Minimum width before stacking */
+}
+
+#footer a {
+    color: black;
+}
+
+#footer a:hover {
+    color: #2761e7;
+}
+
+#footer .text-heading { /* Column title */
+    font-size: 16px; /* Reduced */
+    font-weight: 600;
+    margin-bottom: 15px; /* Reduced */
+    display: flex; /* If icon is part of heading */
+    align-items: center;
+}
+
+#footer .text-description {
+    font-size: 14px; /* Reduced */
+    color: #848484;
+    line-height: 1.5;
+}
+
+#footer button { /* Small icon button in heading */
+    background-color: #2761e7;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    color: #fff;
+    width: 20px; /* Reduced */
+    height: 20px; /* Reduced */
+    margin-left: 10px; /* Space from text */
+    display: inline-flex; /* For centering icon */
+    align-items: center;
+    justify-content: center;
+    font-size: 10px; /* For icon inside */
+}
+/*END FOOTER*/
+
+/* cro-buttons (Fixed Action Buttons) */
+#cro-buttons {
+    /* width: 100px; Let content define, or use auto */
+    /* height: 100px; Let content define, or use auto */
+    color: #20298e;
+    display: flex;
+    flex-direction: column; 
+    gap: 15px; 
+    justify-content: center; 
+    align-items: center; 
+    position: fixed;
+    bottom: 30px; /* Increased distance from bottom */
+    right: 30px;  /* Increased distance from right */
+    z-index: 100; /* Ensure it's above other content */
+}
+
+#cro-buttons .fas, #cro-buttons img { /* Common style for buttons */
+    width: 48px; /* Slightly larger */
+    height: 48px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #20298e;
+    color: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+#cro-buttons .fas { /* If using FontAwesome icons */
+    font-size: 20px;
+    /* padding: 10px; Not needed with fixed size and flex centering */
+}
+
+#cro-buttons img {
+    /* Ensure image fills if it's smaller, or use padding for background effect */
+    padding: 8px; /* If image is smaller than 48x48 and needs background */
+    object-fit: contain; /* Or cover */
+}
+
+#cro-buttons > *:hover { /* Hover effect for all direct children */
+    transform: scale(1.1);
+    background-color: #2761e7; /* Example hover color */
+}
+
+/*START FOOTER-2*/
+
+#footer-2 { /* Main footer links and info section */
+    margin: 30px 20px 30px 20px; /* Symmetrical horizontal margin */
+    display: flex;
+    flex-wrap: wrap; /* Allow columns to wrap */
+    gap: 30px; /* Space between columns */
+    justify-content: space-between;
+}
+
+#footer-2 .footer-2-item { /* Each column */
+    /* width: 347.5px; Use flex-basis */
+    flex: 1 1 250px; /* Grow, shrink, basis. Adjust basis for desired column count */
+    min-width: 200px; /* Minimum width before stacking */
+    /* padding: 0 10px 10px 0; Use gap and parent padding */
+}
+
+#footer-2 .logo img { /* Logo in first column */
+    /* margin-left: 20px; Adjust as needed, or remove if centered */
+    margin-top: 0; /* Removed, align with flex */
+    width: auto; 
+    max-width: 150px; /* Control logo size */
+    margin-bottom: 20px; /* Space below logo */
+}
+
+#footer-2 .footer-2-item-2 .text-header { /* Column titles in other columns */
+    color: #000;
+    font-size: 16px; /* Reduced */
+    font-weight: bold;
+    margin-bottom: 15px; /* Space below title */
+}
+
+#footer-2 .footer-2-item-2 ul { /* List of links */
+    padding-left: 0; /* Remove default ul padding */
+}
+
+#footer-2 .footer-2-item-2 li {
+    padding: 6px 0; /* Reduced padding */
+}
+
+#footer-2 .footer-2-item-2 a {
+    color: #848484;
+    font-size: 14px;
+}
+
+
+#footer-2 .social-list { /* Social icons list */
+    padding-left: 0;
+    margin-top: 10px; /* Space above social icons if they are after text */
+}
+
+#footer-2 .social-list li {
+    display: inline-block;
+    margin-right: 10px; /* Space between icons */
+}
+
+#footer-2 .social-list li:last-child {
+    margin-right: 0;
+}
+
+#footer-2 .text-description { /* Text in the first column */
+    width: auto; /* Take full width of column */
+    max-width: 290px; /* Original max if needed */
+    color: #848484;
+    font-size: 14px; /* Reduced */
+    margin: 0 0 15px 0; /* No left margin */
+    line-height: 1.5; /* Adjusted */
+    letter-spacing: 0.2px;
+}
+
+#footer-2 .social { /* "Follow us" text */
+    font-size: 16px; /* Reduced */
+    font-weight: bold;
+    margin: 0 0 10px 0; /* No left margin */
+}
+
+#footer-2 .social-list i { /* Social media icons */
+    height: 24px; /* Reduced */
+    width: 24px; /* Reduced */
+    display: inline-flex; /* For centering */
+    align-items: center;
+    justify-content: center;
+    font-size: 20px; /* Reduced icon size */
+    /* margin-left: 11px; Use margin on li */
+    color: #555; /* Example icon color */
+    transition: color 0.3s ease;
+}
+
+#footer-2 .social-list i:hover {
+    color: #2761e7; /* Hover color for icons */
+}
+
+/* #footer-2 .footer-2-item-2 { Redundant, already styled .footer-2-item
+    margin-left: 60px;
+} */
+
+#footer-2 .footer-2-item-2 .shop { /* App store images */
+    display: flex;
+    gap: 10px; /* Space between images */
+    margin-top: 10px;
+}
+
+#footer-2 .footer-2-item-2 .shop img {
+    width: auto; /* Let height control or set max-width */
+    height: 35px; /* Reduced */
+    max-width: 110px; /* Max width for app store badges */
+}
+
+/* #footer-2 .item-2 { Use flex ordering or specific classes if layout is complex
+    margin-left: 152px;
+} */
+
+#footer-2 .footer-2-item-2 .text-descriptop { /* Typo: description? */
+    font-size: 14px;
+    color: #777;
+    padding: 15px 0; /* Reduced */
+}
+
+/* #footer-2 .footer-2-item-2 .img-2 { Unclear usage here
+    padding-left: 10px;
+} */
+
+/*HOVER for footer links*/
+#footer-2 li:hover a {
+    color: #1c61e7;
+}
+
+/* #footer-2 .logo2 img { What is logo2? If it's an SVG, use fill for color change
+    color: #1c61e7;
+} */
+
+/*END FOOTER-2*/
+
+hr { /* Global hr, might need to be more specific */
+    border: 0;
+    height: 1px;
+    background-color: #e0e0e0; /* Lighter color */
+    margin: 20px 0; /* Add some space around hr */
+}
+
+/*START FOOTER-3*/
+
+#footer-3 { /* Copyright and payment icons */
+    margin: 20px; /* Symmetrical margin */
+    display: flex;
+    flex-wrap: wrap; /* Allow items to wrap */
+    justify-content: space-between; /* Space out copyright and payment icons */
+    align-items: center;
+    padding: 15px 0; /* Add some vertical padding */
+    border-top: 1px solid #e0e0e0; /* Separator line if #footer doesn't have bottom border */
+    gap: 15px; /* Space if items wrap */
+}
+#footer-3 p { /* Assuming copyright text is in a p tag */
+    font-size: 13px;
+    color: #848484;
+}
+
+#footer-3 ul { /* List for bank icons */
+    padding-left: 0;
+    margin-bottom: 0; /* Remove default margin */
+}
+#footer-3 li {
+    display: inline-block;
+    margin-left: 8px; /* Space between icons */
+}
+#footer-3 li:first-child {
+    margin-left: 0;
+}
+
+#footer-3 .bank i { /* Payment icons */
+    height: 24px; /* Reduced */
+    width: auto; /* Let icon content define width, or set fixed if they are images */
+    max-width: 35px; /* Max width for payment icons */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px; /* If font icons, adjust size */
+    /* margin-left: 11px; Use margin on li */
+    color: #888; /* Example color for payment icons */
+}
+/*END FOOTER-3*/
+
+/* Button Flip Animation - Should be generally responsive */
+.btn-flip {
+    width: auto; /* Adjust width based on content or use min/max */
+    min-width: 180px; /* Example min-width */
+    max-width: 227.34px; /* Original as max */
+    height: 42px;
+    opacity: 1;
+    outline: 0;
+    color: #fff;
+    line-height: 42px; /* Match height */
+    position: relative;
+    text-align: center;
+    display: inline-block;
+    text-decoration: none;
+    font-family: Arial, Helvetica, sans-serif;
+    border-radius: 8px;
+    padding: 0 15px; /* Add padding for dynamic width */
+    box-sizing: border-box; /* Include padding in width/height */
+}
+.btn-flip:hover:after {
+    opacity: 1;
+    transform: translateY(0) rotateX(0);
+}
+.btn-flip:hover:before {
+    opacity: 0;
+    transform: translateY(50%) rotateX(90deg);
+}
+.btn-flip:after {
+    top: 0;
+    left: 0;
+    opacity: 0;
+    width: 100%;
+    color: #fff;
+    display: block;
+    transition: 0.5s;
+    position: absolute;
+    background: #1c61e7; /* Front refers to the state visible on hover */
+    content: attr(data-front);
+    transform: translateY(-50%) rotateX(90deg);
+    border-radius: 8px;
+    line-height: 42px; /* Ensure text is centered */
+}
+.btn-flip:before {
+    top: 0;
+    left: 0;
+    opacity: 1;
+    color: #fff;
+    display: block;
+    line-height: 42px;
+    transition: 0.5s;
+    position: relative;
+    background: #2761e7; /* Back refers to initial state (slightly different blue) */
+    content: attr(data-back);
+    transform: translateY(0) rotateX(0);
+    border-radius: 8px;
+}
+
+/* Microsoft Right Column Button Flip - More specific */
+#microsoft .right .btn-flip {
+    width: 100%; /* Make it full width of its container */
+    max-width: 295.525px; /* Original as max */
+    height: 42px;
+    /* Other properties inherited or can be overridden */
+    margin: 15px auto; /* Center button if container is wider */
+    display: block; /* For margin auto to work if needed */
+}
+/* :hover, :after, :before pseudo-elements will inherit from general .btn-flip */
+
+
+/*START LIST-PRODUCT (Duplicate section name, this might be "Featured Products" or similar) */
+/* Assuming this is another instance of a product listing.
+   If #list-product styles are intended to be reusable, ensure class names are distinct or apply common styles to a shared class.
+   If this is a different section, rename #list-product to something unique.
+   For this example, I'll assume it's a separate section that needs similar responsive treatment.
+*/
+#featured-products { /* Changed ID to avoid conflict if it's a new section */
+    margin-top: 60px;
+    margin-bottom: 60px;
+    margin-left: 85px; /* Original margin */
+    padding: 0 15px;
+}
+#featured-products a { color: #000; }
+#featured-products .text-heading {
+    padding-top: 10px;
+    margin-bottom: 30px;
+    font-size: 22px; /* Reduced */
+    font-weight: 600;
+}
+#featured-products .product { /* The UL */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center; /* Or flex-start */
+    /* margin-left: 120px; Remove this, control overall section margin */
+}
+#featured-products .product li {
+    flex: 0 1 196px; /* Basis from original width */
+    max-width: 196.56px;
+    /* height: 247.76px; Let content define or use min-height */
+    /* padding: 0 10px; Use gap on parent */
+    background-color: #fff;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    box-sizing: border-box;
+}
+#featured-products .img-wrapper {
+    /* background-color: #fff; Moved to li */
+    border-radius: 12px; /* If image needs specific rounding inside padding */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 10px; /* Padding around image */
+    margin-bottom: 10px; /* Space below image */
+}
+#featured-products .img-wrapper img {
+    max-width: 100%;
+    height: auto;
+}
+#featured-products .hover-mask { /* For product name or quick view */
+    padding-top: 10px; /* Reduced */
+    text-align: center;
+}
+#featured-products .more-products {
+    color: #848484;
+    padding-top: 30px; /* Reduced */
+    display: block; /* For text-align center to work */
+    text-align: center;
+    width: 100%;
+}
+/* PRODUCT HOVER for #featured-products */
+#featured-products li:hover img {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+}
+/*END  LIST-PRODUCTS (or #featured-products) */
+
+
+/* khuyen-mai (Promotions) */
+.khuyen-mai {
+    width: auto; /* Adjust from max-width: 90% if it's inside a constrained parent */
+    max-width: 90%; /* Good for responsive */
+    background: #fff;
+    padding: 20px; /* Reduced padding */
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 30px auto; /* Center it if it's a standalone block */
+}
+.khuyen-mai h2 { /* Add styling for title if any */
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+
+/* guide-container (Instructions/Blog Post Style) */
+.guide-container {
+    max-width: 900px; /* Reduced max-width */
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: left; /* Usually better for readable text */
+    margin: 30px auto; /* Center container, remove fixed left margin */
+}
+.guide-container h2 {
+    color: #d71a19;
+    font-size: 22px; /* Reduced */
+    margin-bottom: 15px; /* Reduced */
+    text-align: center; /* Center title if desired */
+}
+.guide-container p {
+    font-size: 15px; /* Reduced */
+    color: #333;
+    margin-bottom: 15px; /* Reduced */
+    line-height: 1.6;
+}
+.guide-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin: 0 auto 20px; /* Center image if it's block */
+    display: block;
+}
+.guide-container ol {
+    padding-left: 20px; /* Indent ordered list */
+    list-style-position: outside; /* Standard list style */
+    text-align: left;
+}
+.guide-container ol li {
+    margin-bottom: 10px;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+
+/* gioithieu (About Us / Introduction Section) */
+.gioithieu {
+    display: flex;
+    flex-wrap: wrap; /* Allow image and text to wrap */
+    align-items: flex-start; /* Or center */
+    gap: 30px; /* Space between image and text */
+    margin: 20px auto; /* Center section, remove fixed left margin */
+    background-color: #fff; 
+    border-radius: 12px; 
+    padding: 30px; /* Increased padding */
+    /* width: 1400px; Use max-width */
+    max-width: 1200px; /* Constrain width */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15),
+               0 4px 8px rgba(0, 0, 0, 0.10); 
+    transition: transform 0.3s ease, box-shadow 0.3s ease; 
+}
+.gioithieu:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 25px rgba(0,0,0,0.2), 0 6px 10px rgba(0,0,0,0.15);
+}
+
+.gioithieu img {
+    /* max-width: 40%; Use flex-basis */
+    flex: 1 1 300px; /* Image column */
+    max-width: 40%; /* Max width constraint */
+    min-width: 250px; /* Prevent from getting too small */
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover; /* If a fixed height is desired for image area */
+}
+.gioithieu .content {
+    /* max-width: 60%; Use flex-basis */
+    flex: 2 1 400px; /* Text content column, takes more space */
+    font-family: Arial, sans-serif;
+    font-size: 16px; /* Reduced */
+    line-height: 1.7; /* Increased for readability */
+}
+.gioithieu .content b, .gioithieu .content strong { /* Make bold text stand out more */
+    font-size: 18px; /* Reduced */
+    color: #111; /* Darker color for emphasis */
+}
+.gioithieu .content h3 { /* If there are subheadings */
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+
+/* Cart Page (Sliding Panel) */
+.cart-page {
+    position: fixed;
+    /* height: 700px; Use max-height or top/bottom */
+    top: 0; /* Align to top */
+    bottom: 0; /* Align to bottom, making it full height */
+    max-height: 100vh; /* Max height is viewport height */
+    width: 90%; /* Percentage width for smaller screens */
+    max-width: 400px; /* Original max-width */
+    right: -100%; /* Initial position off-screen */
+    background-color: #f0f4f8; /* Slightly different background */
+    padding: 20px; /* Consistent padding */
+    overflow-y: auto; /* Scroll only if content exceeds height */
+    /* margin-top: 140px; Remove if top:0, bottom:0 is used */
+    /* margin-bottom: 10px; Remove */
+    border-radius: 20px 0 0 20px; /* Round top-left and bottom-left corners */
+    box-shadow: -5px 0 15px rgba(0,0,0,0.1); /* Shadow on the left side */
+    transition: right 0.5s ease-in-out; /* Smoother transition for 'right' */
+    z-index: 999; 
+}
+.cart-page.active { /* Class to show the cart */
+    right: 0;
+}
+
+.cart-page h2 { /* Title for cart */
+    font-size: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #1a3f97;
+}
+
+.cart-page .table { /* Cart items table */
+    width: 100%; /* Full width of cart panel */
+    text-align: left; /* Align text to left for readability */
+    margin-bottom: 20px; /* Reduced margin */
+    /* height: auto; Not needed */
+    border-collapse: collapse; /* Clean table borders */
+}
+.cart-page .table img {
+    max-width: 70px; /* Reduced image size */
+    max-height: 70px;
+    border-radius: 4px;
+    object-fit: cover;
+}
+.cart-page .table th, .cart-page .table td {
+    padding: 8px; /* Add padding to cells */
+    border-bottom: 1px solid #ddd; /* Separator line for rows */
+    vertical-align: middle;
+}
+.cart-page .table th:last-child, .cart-page .table td:last-child {
+    text-align: right; /* Align last column (price/subtotal) to right */
+}
+
+
+.cart-page .table .thead-dark th { /* Table header */
+    text-align: left;
+    background: #1a3f97;
+    color: #fff; /* White text on dark background */
+    border-color: #1a3f97;
+    vertical-align: middle;
+    font-size: 14px;
+}
+
+.cart-page .table td {
+    color: #555; /* Slightly darker text */
+    font-size: 14px; /* Reduced */
+    font-weight: normal; /* Normal weight for table data */
+}
+.cart-page .table .product-name-column { /* Add class to product name td for more control */
+    font-weight: 600;
+    color: #333;
+}
+
+.cart-page .qty { /* Quantity input wrapper */
+    /* width: 10px; Remove this, input will define width */
+    display: flex; /* For aligning input and potentially +/- buttons */
+    align-items: center;
+}
+.cart-page .qty input[type="number"]{
+    /* margin-right: auto; Remove */
+    width: 50px; 
+    height: 30px; /* Reduced height */
+    text-align: center; 
+    font-size: 14px; 
+    border: 1px solid #ccc; 
+    border-radius: 4px; 
+    padding: 2px; 
+    outline: none; 
+} 
+
+.cart-delete { /* Delete button for cart item */
+    display: inline-flex; /* Align icon inside */
+    align-items: center; 
+    justify-content: center; 
+    width: 30px; /* Reduced size */
+    height: 30px; /* Reduced size */
+    background-color: #e74c3c; /* Red color for delete */
+    border-radius: 50%; /* Circular button */
+    cursor: pointer; 
+    transition: background-color 0.2s ease; 
+    border: none;
+    color: #fff; /* White icon */
+}
+.cart-delete i { /* Assuming icon font */
+    font-size: 14px;
+}
+.cart-delete:hover {
+    background-color: #c0392b; /* Darker red on hover */
+}
+
+.cart-summary { /* Section for total and checkout button */
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+}
+.cart-summary .total-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.cart-page button.checkout-btn { /* Checkout button */
+    height: 40px; /* Increased height */
+    width: 100%; /* Full width */
+    padding: 0 15px; /* Horizontal padding */
+    text-align: center;
+    color: #ffffff;
+    background: #27ae60; /* Green color for checkout */
+    border: none;
+    border-radius: 5px;
+    /* margin-left: 150px; Remove, use width 100% */
+    margin-top: 0; /* Remove if inside .cart-summary */
+    /* margin-bottom: 15px; Remove */
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.cart-page button.checkout-btn:hover {
+    background-color: #219d52; /* Darker green */
+}
+
+
+/* Media Queries for Responsiveness */
+
+/* For very large screens, ensure main content areas are not overly wide */
+@media (min-width: 1600px) {
+    #header, #nav, .main-content-area, #footer, #footer-2, #footer-3, #main-footer {
+        /* margin-left: calc( (100vw - 1500px) / 2 ); /* Example to center content if sidebar is not fixed */
+        /* margin-right: calc( (100vw - 1500px) / 2 ); */
+    }
+    .main-content-area, #sales, #poster, #microsoft, #about, .gioithieu, .guide-container {
+        /* max-width: 1400px; /* Max content width */
+        /* margin-left: auto; */
+        /* margin-right: auto; */
+    }
+     /* If sidebar is fixed, adjust margins for main content area */
+    #header, #nav, .main-content-area, #main-footer {
+        margin-left: 58px; /* Ensure this is consistent */
+    }
+    .main-content-area > * { /* Direct children like #content, #list-product etc. */
+        max-width: 1400px; /* Constrain their width */
+        margin-left: auto !important; /* Override more specific margins to center */
+        margin-right: auto !important;
+    }
+}
+
+
+/* Targetting Small Laptops and Large Tablets (e.g., 12.9" iPad Landscape is ~1024px, 1366px common laptop) */
+@media (max-width: 1366px) {
+    #header .search-bar {
+        width: auto; /* Allow flex to size it */
+        min-width: 150px;
+        margin-left: 15px;
+        margin-right: 15px;
+    }
+    #header .subnav li { padding-left: 10px; }
+    #header .subnav i { font-size: 22px; }
+    #header .subnav p { font-size: 11px; }
+
+    #nav .subnav { margin-left: 15px; }
+    #nav li { padding-left: 10px; }
+    #nav .subnav a { padding: 0 8px; font-size: 12px; }
+    #nav .subnav-2 { margin-left: 20px; }
+
+    /* Reduce large margins for content blocks */
+    #content, #list-product, #sales, #new-product, #poster, #microsoft, #seen, #post, #postblog, #about, .contact, #main-footer > #footer, #main-footer > #footer-2, #main-footer > #footer-3 {
+        margin-left: 68px; /* sidebar (58px) + a bit of space */
+        margin-right: 20px; /* Keep some right margin */
+    }
+    /* For elements that had very large explicit margins like 100px */
+     #list-product, #sales, #new-product, #poster, #microsoft, #seen, #post, #postblog, #about {
+         /* These already have margin-left:85px or similar in their rules, this general rule can be tricky */
+         /* Best to adjust each individually if they have different base margins */
+     }
+
+
+    #content .left, #content .right {
+        max-width: 100%; /* Allow them to go full width if they stack */
+    }
+    #content .right .first-right, #content .subright .subright1, #content .subright .subright2 {
+        max-width: 100%;
+    }
+    #content .subright {
+        gap: 15px;
+    }
+
+    #poster .main-content .text-content .text-heading { font-size: 30px; }
+    #poster .main-content .text-content .text-description { font-size: 16px; }
+    
+    #microsoft .top .text-heading { font-size: 28px; }
+
+    .guide-container { margin-left: 68px; margin-right: 20px; max-width: none; }
+    .gioithieu { margin-left: 68px; margin-right: 20px; max-width: none; padding: 20px; }
+    .gioithieu img { max-width: 100%; flex-basis: 100%; margin-bottom: 15px; } /* Stack image */
+    .gioithieu .content { max-width: 100%; flex-basis: 100%; }
+
+}
+
+/* iPads in Landscape & smaller laptops */
+@media (max-width: 1024px) {
+    #header {
+        padding: 0 10px;
+        flex-wrap: wrap; /* Allow items to wrap if needed */
+        height: auto; /* Adjust height if items wrap */
+        padding-bottom: 10px;
+    }
+    #header .logo { margin-bottom: 10px; width: 100px;}
+    #header .search-bar {
+        order: 3; /* Move search bar to a new line if header items wrap */
+        width: 100%;
+        margin: 10px 0 0 0;
+    }
+    #header .subnav {
+        margin: 10px 0 0 0;
+        width: 100%;
+        justify-content: space-around;
+    }
+
+    #nav {
+        padding: 0 10px;
+        flex-direction: column; /* Stack items in nav */
+        height: auto;
+        align-items: flex-start;
+    }
+    #nav .subnav, #nav .subnav-2 {
+        margin-left: 0;
+        width: 100%;
+        justify-content: flex-start;
+        margin-top: 5px;
+    }
+    #nav .block { display: none; } /* Hide spacer block */
+    #nav .subnav li { line-height: 35px; }
+    #nav .subnav-2 a { width: 35px; height: 35px;}
+
+
+    #content {
+        margin-left: 68px; margin-right: 10px;
+        flex-direction: column; /* Stack left and right content */
+    }
+    #content .left, #content .right {
+        margin-left: 0;
+        width: 100%;
+        max-width: none; /* Override previous max-width */
+    }
+    #content .right { margin-top: 20px; }
+    #content .subright { flex-direction: column; } /* Stack subright items */
+    #content .subright .subright1, #content .subright .subright2 {
+        max-width: none;
+    }
+
+    #list-product, #sales, #new-product, #poster, #microsoft, #seen, #post, #postblog, #about, .contact, #main-footer > #footer, #main-footer > #footer-2, #main-footer > #footer-3 {
+        margin-left: 68px;
+        margin-right: 10px;
+    }
+    
+    #new-product { flex-direction: column; }
+    #new-product .new-iphone, #new-product .right {
+        max-width: none;
+        width: 100%;
+    }
+    #new-product .right { margin-top: 20px; }
+
+    #poster .main-content { flex-direction: column; }
+    #poster .list-item { justify-content: flex-start; } /* Align items to start */
+
+    #microsoft { flex-direction: column; }
+    #microsoft .left-column, #microsoft .right {
+        width: 100%;
+        max-width: none;
+    }
+    #microsoft .bot { flex-direction: column; } /* Stack boxes in .bot */
+    #microsoft .bot .box { max-width: none; }
+
+    #footer, #footer-2 {
+        flex-direction: column;
+        margin-left: 10px; margin-right: 10px; /* Adjust for no sidebar scenario or full width footer */
+    }
+    #main-footer { margin-left: 0; } /* Footer takes full width */
+    #footer .address, #footer-2 .footer-2-item {
+        min-width: 100%; /* Full width for footer columns */
+        margin-bottom: 20px;
+    }
+    #footer-3 {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        margin-left: 10px; margin-right: 10px;
+    }
+    #footer-3 ul { margin-top: 10px; }
+}
+
+/* Tablet Portrait */
+@media (max-width: 768px) {
+    #sidebar { width: 45px; } /* Optionally shrink sidebar further */
+    #sidebar:hover { width: 180px; }
+    #sidebar .nav-text { left: 50px; }
+
+
+    #header, #nav, .main-content-area, #main-footer {
+        margin-left: 0; /* Sidebar might be hidden or overlaid */
+        width: 100%;
+    }
+    /* Re-adjust main content margins if sidebar is overlaid or hidden by default on mobile */
+    #content, #list-product, #sales, #new-product, #poster, #microsoft, #seen, #post, #postblog, #about, .contact {
+        margin-left: 15px;
+        margin-right: 15px;
+    }
+
+
+    #header .logo { width: 80px; margin-left: 10px; }
+    #header .search-bar { margin: 10px 10px 0; } /* Search bar on its own line */
+    #header .subnav { justify-content: center; padding: 0; }
+    #header .subnav li { padding-left: 8px; padding-right: 8px; }
+    #header .subnav i { font-size: 20px; }
+    #header .subnav p { display: none; } /* Hide text under icons for space */
+
+
+    #nav .subnav a { font-size: 11px; padding: 0 5px; }
+    #nav .subnav li { padding-left: 5px; line-height: 30px; }
+
+
+    #content .left .text-content .text-heading { font-size: 24px; }
+    #content .left .text-content .text-description, .text-description2 { font-size: 13px; }
+    #content .right .first-right .text-heading { font-size: 20px; }
+
+    #list-product .product li, #sales li, #new-product .right li {
+        flex-basis: calc(50% - 10px); /* Two items per row */
+        max-width: calc(50% - 10px);
+    }
+    #featured-products .product li {
+        flex-basis: calc(50% - 10px);
+        max-width: calc(50% - 10px);
+    }
+
+
+    #poster .main-content .text-content .text-heading { font-size: 26px; }
+    #poster .main-content .text-content .text-description { font-size: 15px; }
+    #poster .list-item .item { max-width: calc(50% - 10px); } /* Two items if space */
+
+    #microsoft .top { flex-direction: column; text-align: center; }
+    #microsoft .top .img-content { margin-bottom: 15px; }
+
+    .contact .container { gap: 0; } /* Remove gap if stacking */
+    .contact .contact-info, .contact .form-container {
+        margin-bottom: 30px; /* Space when stacked */
+    }
+    .contact .form-container { margin-bottom: 0; }
+
+
+    .khuyen-mai, .guide-container, .gioithieu {
+        margin-left: 15px; margin-right: 15px; padding: 15px;
+    }
+    .gioithieu img, .gioithieu .content { max-width: 100%; flex-basis: 100%;}
+
+
+    /* Cart page adjustments for smaller screens */
+    .cart-page {
+        width: 100%; /* Full width on mobile */
+        max-width: none;
+        border-radius: 0; /* No rounding for full screen */
+        padding: 15px;
+    }
+    .cart-page .table img { max-width: 50px; max-height: 50px; }
+    .cart-page .table th, .cart-page .table td { font-size: 12px; padding: 6px; }
+    .cart-page .qty input[type="number"] { width: 40px; height: 28px; font-size: 12px; }
+    .cart-delete { width: 28px; height: 28px; }
+    .cart-delete i { font-size: 12px; }
+    .cart-page button.checkout-btn { height: 36px; font-size: 14px; }
+
+}
+
+/* Mobile screens */
+@media (max-width: 480px) {
+    #list-product .product li, #sales li, #new-product .right li, #featured-products .product li {
+        flex-basis: 100%; /* One item per row */
+        max-width: 100%;
+    }
+    #poster .list-item .item {
+        max-width: 100%; /* One item per row */
+    }
+
+    #header .logo { margin: 0 auto 10px; display: block; float: none; text-align:center; }
+    #header .subnav { flex-wrap: wrap; justify-content: center; }
+    #header .subnav li { margin-bottom: 5px; }
+
+
+    #content .left .text-content .text-heading { font-size: 20px; }
+    #content .left .text-content { padding: 0 5px; }
+
+    /* Further reduce font sizes and paddings */
+    h1, .h1 { font-size: 28px; }
+    h2, .h2 { font-size: 22px; }
+    h3, .h3 { font-size: 18px; }
+    p, span, a, li { font-size: 13px; } /* Careful with global selectors */
+
+    #cro-buttons { bottom: 15px; right: 15px; gap: 10px; }
+    #cro-buttons .fas, #cro-buttons img { width: 40px; height: 40px; }
+    #cro-buttons .fas { font-size: 18px; }
+}
