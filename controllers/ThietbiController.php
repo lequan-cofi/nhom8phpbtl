@@ -1,12 +1,15 @@
 <?php
 require_once __DIR__ . '/../models/ThietbiModel.php';
-
-class ThietBiController {
+if ((isset($_GET['admin']) && $_GET['admin'] == 1) || (php_sapi_name() === 'cli-server')) {
+    if (session_status() === PHP_SESSION_NONE) session_start();
+    if (empty($_SESSION['user']) || $_SESSION['user']['VaiTro'] !== 'Quản trị viên') {
+        header('Location: /index.php?page=login_signup');
+        exit;
+    }
+}class ThietBiController {
     private $model;
 
-    public function __construct() {
-        $this->model = new ThietBiModel();
-    }
+
 
     public function getAll() {
         $stmt = $this->model->getAll();

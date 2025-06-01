@@ -17,6 +17,11 @@ class HomeController {
         // Các dữ liệu khác cho header có thể được thêm ở đây nếu cần
         // Ví dụ: số điện thoại, thông tin người dùng nếu đã đăng nhập
 
+        // Lấy sản phẩm mới nhất
+        require_once APP_PATH . '/models/ThietbiModel.php';
+        $thietbiModel = new ThietBiModel();
+        $recentProducts = $thietbiModel->getRecentProducts()->fetchAll(PDO::FETCH_ASSOC);
+
         // Gọi view layout chính, layout sẽ nạp các phần khác
         $contentView = APP_PATH . '/views/home/index.php'; // Trang con sẽ được nạp vào layout
         

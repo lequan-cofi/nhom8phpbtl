@@ -1,3 +1,15 @@
+<?php
+if (!empty($_SESSION['user'])) {
+    $role = $_SESSION['user']['VaiTro'];
+    if ($role === 'Quản trị viên') {
+        $accountUrl = '/iStore_PHP_Backend/views/admin/dashboard.php';
+    } else {
+        $accountUrl = BASE_URL . '/index.php?page=user&action=taikhoankh';
+    }
+} else {
+    $accountUrl = BASE_URL . '/index.php?page=login_signup';
+}
+?>
 <div id="nav">
          <ul class="subnav">
             <li class="first-item">
@@ -14,7 +26,7 @@
             </ul>
         <div class="block"></div>
         <ul class="subnav-2">
-            <li> <a href="#"> <i class="fa-regular fa-user"></i> </a> </li>
+            <li> <a href="<?php echo $accountUrl; ?>"> <i class="fa-regular fa-user"></i> </a> </li>
             <li> <a href="#"> <i class="fa-solid fa-code-compare"></i> </a> </li>
             <li> <a id="showWishlistBtnPlaceholder"> <i class="fa-regular fa-heart"></i> </a> </li>
             <li> <a class="last-item" href="#"> <i class="fa-solid fa-cart-shopping"></i> </a> </li>

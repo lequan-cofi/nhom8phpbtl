@@ -1,62 +1,10 @@
-<?php
-session_start();
-// Kết nối DB (giả sử đã có hàm db_connect hoặc dùng PDO)
-require_once __DIR__ . '/../../config/database.php';
-$db = db_connect();
-
-$error = $success = '';
-
-// Đăng ký
-if (isset($_POST['action']) && $_POST['action'] === 'signup') {
-    $name = trim($_POST['name'] ?? '');
-    $email = trim($_POST['email'] ?? '');
-    $password = $_POST['password'] ?? '';
-    if (empty($name) || empty($email) || empty($password)) {
-        $error = "Vui lòng nhập đầy đủ thông tin!";
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $error = "Email không hợp lệ!";
-    } else {
-        $stmt = $db->prepare("SELECT id FROM users WHERE email = ?");
-        $stmt->execute([$email]);
-        if ($stmt->fetch()) {
-            $error = "Email đã được đăng ký!";
-        } else {
-            $hash = password_hash($password, PASSWORD_DEFAULT);
-            $stmt = $db->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
-            $stmt->execute([$name, $email, $hash]);
-            $success = "Đăng ký thành công! Bạn có thể đăng nhập.";
-        }
-    }
-}
-// Đăng nhập
-if (isset($_POST['action']) && $_POST['action'] === 'signin') {
-    $email = trim($_POST['email'] ?? '');
-    $password = $_POST['password'] ?? '';
-    $stmt = $db->prepare("SELECT * FROM users WHERE email = ?");
-    $stmt->execute([$email]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    if ($user && password_verify($password, $user['password'])) {
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['role'] = $user['role'];
-        $_SESSION['name'] = $user['name'];
-        if ($user['role'] === 'admin') {
-            header('Location: /admin/dashboard.php');
-        } else {
-            header('Location: /index.php');
-        }
-        exit;
-    } else {
-        $error = "Email hoặc mật khẩu không đúng!";
-    }
-}
-?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>login</title>
-
+    <title>Đăng nhập/Đăng ký - iStore</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <style> 
     @import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
@@ -156,9 +104,9 @@ input {
         0 10px 10px rgba(0, 0, 0, 0.22);
     position: relative;
     overflow: hidden;
-    width: 768px;
+    width: 850px;
     max-width: 100%;
-    min-height: 480px;
+    min-height: 780px;
 }
 
 .form-container {
@@ -193,15 +141,11 @@ input {
 }
 
 @keyframes show {
-
-    0%,
-    49.99% {
+    0%, 49.99% {
         opacity: 0;
         z-index: 1;
     }
-
-    50%,
-    100% {
+    50%, 100% {
         opacity: 1;
         z-index: 5;
     }
@@ -289,101 +233,192 @@ input {
     width: 40px;
 }
 
-footer {
-    background-color: #222;
-    color: #fff;
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+.gender-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin: 20px 0;
+}
+
+.gender-container label {
+    display: flex;
+    align-items: center;
     font-size: 14px;
-    bottom: 0;
-    position: fixed;
-    left: 0;
-    right: 0;
-    text-align: center;
-    z-index: 999;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
 }
 
-footer p {
-    margin: 10px 0;
+.gender-container input[type="radio"] {
+    margin-right: 8px;
+    transform: scale(1.1);
+    accent-color: #FF4B2B;
 }
 
-footer i {
-    color: red;
+.form-group {
+    width: 100%;
+    margin-bottom: 15px;
 }
 
-footer a {
-    color: #3c97bf;
-    text-decoration: none;
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #333;
+    text-align: left;
 }
 
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
 
+.form-group input:focus {
+    border-color: #FF4B2B;
+    outline: none;
+}
+
+.password-requirements {
+    font-size: 12px;
+    color: #666;
+    margin-top: 5px;
+    text-align: left;
+}
 </style>
 <body>
-<?php if (!empty($error)): ?>
-    <div style="color: #fff; background: #e74c3c; padding: 10px; border-radius: 5px; margin-bottom: 10px; text-align:center;">
-        <?= htmlspecialchars($error) ?>
-    </div>
-<?php endif; ?>
-<?php if (!empty($success)): ?>
-    <div style="color: #fff; background: #27ae60; padding: 10px; border-radius: 5px; margin-bottom: 10px; text-align:center;">
-        <?= htmlspecialchars($success) ?>
-    </div>
-<?php endif; ?>
-<!-- END NAV -->
+    <h2>Đăng nhập/Đăng ký</h2>
+    
+    <?php if (!empty($error)): ?>
+        <div class="alert alert-danger">
+            <?= htmlspecialchars($error) ?>
+        </div>
+    <?php endif; ?>
+    
+    <?php if (!empty($success)): ?>
+        <div class="alert alert-success">
+            <?= htmlspecialchars($success) ?>
+        </div>
+    <?php endif; ?>
 
-       <h2>Sign in/up Form</h2>
     <div class="container" id="container">
         <div class="form-container sign-up-container">
-            <form action="" method="POST">
-                <h1>Create Account</h1>
+            <form action="<?php echo BASE_URL; ?>/index.php?page=login_signup&action=signup" method="POST">
+                <h1>Tạo tài khoản</h1>
                 <div class="social-container">
                     <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+                    <a href="#" class="social"><i class="fab fa-google"></i></a>
                     <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
                 </div>
-                <span>or use your email for registration</span>
-                <input type="text" name="name" placeholder="Name" required />
-                <input type="email" name="email" placeholder="Email" required />
-                <input type="password" name="password" placeholder="Password" required />
-                <input type="hidden" name="action" value="signup" />
-                <button type="submit">Sign Up</button>
+                <span>hoặc sử dụng email để đăng ký</span>
+                
+                <div class="form-group">
+                    <input type="text" name="name" placeholder="Họ và tên" required 
+                           pattern="[A-Za-zÀ-ỹ\s]+" title="Vui lòng chỉ nhập chữ cái và khoảng trắng"/>
+                </div>
+                
+                <div class="form-group">
+                    <input type="email" name="email" placeholder="Email" required />
+                </div>
+                
+                <div class="form-group">
+                    <input type="password" name="password" placeholder="Mật khẩu" required 
+                           minlength="8" title="Mật khẩu phải có ít nhất 8 ký tự"/>
+                    <div class="password-requirements">
+                        Mật khẩu phải có ít nhất 8 ký tự
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <input type="password" name="password_confirm" placeholder="Xác nhận mật khẩu" required />
+                </div>
+                
+                <div class="form-group">
+                    <input type="tel" name="phone" placeholder="Số điện thoại" required 
+                           pattern="[0-9]{10,11}" title="Vui lòng nhập số điện thoại hợp lệ (10-11 số)"/>
+                </div>
+                
+                <div class="form-group">
+                    <input type="text" name="address" placeholder="Địa chỉ" required />
+                </div>
+                
+                <div class="gender-container">
+                    <label>
+                        <input type="radio" name="gender" value="Nam" required>
+                        Nam
+                    </label>
+                    <label>
+                        <input type="radio" name="gender" value="Nữ" required>
+                        Nữ
+                    </label>
+                </div>
+
+                <button type="submit">Đăng ký</button>
             </form>
         </div>
+
         <div class="form-container sign-in-container">
-            <form action="" method="POST">
-                <h1>Sign in</h1>
+            <form action="<?php echo BASE_URL; ?>/index.php?page=login_signup&action=signin" method="POST">
+                <h1>Đăng nhập</h1>
                 <div class="social-container">
                     <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+                    <a href="#" class="social"><i class="fab fa-google"></i></a>
                     <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
                 </div>
-                <span>or use your account</span>
-                <input type="email" name="email" placeholder="Email" required />
-                <input type="password" name="password" placeholder="Password" required />
-                <input type="hidden" name="action" value="signin" />
-                <a href="#">Forgot your password?</a>
-                <button type="submit">Sign In</button>
+                <span>hoặc sử dụng email để đăng nhập</span>
+                
+                <div class="form-group">
+                    <input type="email" name="email" placeholder="Email" required />
+                </div>
+                
+                <div class="form-group">
+                    <input type="password" name="password" placeholder="Mật khẩu" required />
+                </div>
+                
+                <a href="#">Quên mật khẩu?</a>
+                <button type="submit">Đăng nhập</button>
             </form>
         </div>
+
         <div class="overlay-container">
             <div class="overlay">
                 <div class="overlay-panel overlay-left">
-                    <h1>Welcome Back!</h1>
-                    <p>To keep connected with us please login with your personal info</p>
-                    <button class="ghost" id="signIn" type="button">Sign In</button>
+                    <h1>Chào bạn!</h1>
+                    <p>Nhập thông tin cá nhân của bạn và bắt đầu hành trình với chúng tôi   </p>
+                    <button class="ghost" id="signIn" type="button">Đăng nhập</button>
                 </div>
                 <div class="overlay-panel overlay-right">
-                    <h1>Hello, Friend!</h1>
-                    <p>Enter your personal details and start journey with us</p>
-                    <button class="ghost" id="signUp" type="button">Sign Up</button>
+                    <h1>Chào mừng trở lại!</h1>
+                    <p>Để tiếp tục, vui lòng đăng nhập với thông tin cá nhân của bạn</p>
+                    <button class="ghost" id="signUp" type="button">Đăng ký</button>
                 </div>
             </div>
         </div>
     </div>
-    
-
-  <!-- JavaScript Libraries -->
 
     <script>
-        
         const signUpButton = document.getElementById('signUp');
         const signInButton = document.getElementById('signIn');
         const container = document.getElementById('container');
@@ -396,7 +431,13 @@ footer a {
             container.classList.remove('right-panel-active');
         });
 
+        // Xử lý hiển thị thông báo lỗi
+        const alerts = document.querySelectorAll('.alert');
+        alerts.forEach(alert => {
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 5000);
+        });
     </script>
-
 </body>
 </html>

@@ -8,6 +8,11 @@ class MicrosoftController {
     private $db;
 
     public function __construct($db) {
+        if (session_status() === PHP_SESSION_NONE) session_start();
+        if (empty($_SESSION['user']) || $_SESSION['user']['VaiTro'] !== 'Quản trị viên') {
+            header('Location: /index.php?page=login_signup');
+            exit;
+        }
         $this->db = $db;
         $this->model = new MicrosoftModel($db);
         $this->khuyenMaiModel = new KhuyenMaiModel($db);

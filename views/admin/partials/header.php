@@ -16,13 +16,13 @@
 <body>
 <nav class="navbar navbar-expand-lg admin-navbar mb-4">
     <div class="container-fluid">
-        <a class="navbar-brand" href="dashboard.php"><i class="fas fa-cogs"></i> Admin iStore</a>
+        <a class="navbar-brand" href="/iStore_PHP_Backend/views/admin/dashboard.php"><i class="fas fa-cogs"></i> Admin iStore</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbar" aria-controls="adminNavbar" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="adminNavbar">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="dashboard.php">Trang chủ</a></li>
+                <li class="nav-item"><a class="nav-link" href="/iStore_PHP_Backend/views/admin/dashboard.php">Trang chủ</a></li>
                 <li class="nav-item"><a class="nav-link" href="admin_lienhe.php">Liên hệ</a></li>
                 <li class="nav-item"><a class="nav-link" href="admin_blog.php">Blog</a></li>
                 <li class="nav-item"><a class="nav-link" href="admin_cuahang.php">Cửa hàng</a></li>
@@ -32,7 +32,8 @@
                 <li class="nav-item"><a class="nav-link" href="admin_sales.php">Sản phẩm KM</a></li>
                 <li class="nav-item"><a class="nav-link" href="admin_saleslist.php">DS Ưu đãi</a></li>
                 <li class="nav-item"><a class="nav-link" href="admin_poster.php">Poster</a></li>
-                <li class="nav-item"><a class="nav-link" href="../index.php">Về trang người dùng</a></li>
+                <li class="nav-item"><a class="nav-link" href="../../public/index.php">Về trang người dùng</a></li>
+                <li class="nav-item"><a class="nav-link text-danger" href="../../public/index.php?page=user&action=logout"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
             </ul>
         </div>
     </div>

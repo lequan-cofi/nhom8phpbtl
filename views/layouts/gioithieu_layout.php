@@ -1,7 +1,7 @@
 <?php
 // views/layouts/main_layout.php
 // BASE_URL đã được define trong public/index.php
-require_once APP_PATH . '/controllers/ContentController.php';
+//require_once APP_PATH . '/controllers/ContentController.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">

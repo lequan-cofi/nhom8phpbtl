@@ -1,9 +1,15 @@
 <?php
 require_once __DIR__ . '/../models/LoaiThietBiModel.php';
-
+// Chỉ kiểm tra phân quyền admin nếu là truy cập từ admin (ví dụ: qua URL hoặc action đặc biệt)
+if ((isset($_GET['admin']) && $_GET['admin'] == 1) || (php_sapi_name() === 'cli-server')) {
+    if (session_status() === PHP_SESSION_NONE) session_start();
+    if (empty($_SESSION['user']) || $_SESSION['user']['VaiTro'] !== 'Quản trị viên') {
+        header('Location: /index.php?page=login_signup');
+        exit;
+    }
+}
 class LoaithietbiController {
     private $loaiThietBiModel;
-
     public function __construct() {
         $this->loaiThietBiModel = new LoaiThietBiModel();
     }

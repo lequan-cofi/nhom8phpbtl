@@ -666,10 +666,12 @@ a:focus {
 
 #list-product img {
   transition: transform 0.6s ease;
+  
 }
 
 #list-product li:hover img {
   transform: scale(1.1);
+  background-color: none; /* hoặc bất kỳ màu nền nào */
 }
 
 /*END PRODUCT HOVER*/
@@ -842,7 +844,7 @@ a:focus {
   margin-bottom: 10px;
 }
 
-#sales .product-in-stock {
+#sales .product-in-stock  {
   color: #000;
   margin-bottom: 10px;
 }
@@ -853,7 +855,19 @@ a:focus {
   color: #1c61e7;
   font-weight: 600;
 }
-
+#sales .product-price .original-price{
+  color: #000;
+  margin-bottom: 15px;
+  color: #1c61e7;
+  font-weight: 600;
+}
+#sales .product-price .discount-price{
+  color: #000;
+  font-size: 20px;
+  margin-bottom: 15px;
+  color: #f84711;
+  font-weight: 1000;
+}
 /* #sales .add-product {
   background-color: #1c61e7;
   border-radius: 8px;
@@ -2653,4 +2667,5 @@ a.logo img {
       font-size: 10px;
   }
 } 
+
 

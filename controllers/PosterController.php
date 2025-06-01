@@ -5,6 +5,13 @@ class PosterController {
     private $model;
 
     public function __construct() {
+        if ((isset($_GET['admin']) && $_GET['admin'] == 1) || (php_sapi_name() === 'cli-server')) {
+            if (session_status() === PHP_SESSION_NONE) session_start();
+            if (empty($_SESSION['user']) || $_SESSION['user']['VaiTro'] !== 'Quản trị viên') {
+                header('Location: /index.php?page=login_signup');
+                exit;
+            }
+        }
         $this->model = new PosterModel();
     }
 

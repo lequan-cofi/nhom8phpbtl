@@ -32,8 +32,8 @@ $sales = $salesController->getAllSales();
                 Còn hàng
               </p>
               <div class="product-price">
-                <span class="original-price"><?php echo isset($sale['Gia']) ? number_format($sale['Gia'], 0, ',', '.') : ''; ?>đ</span>
-                <span class="discount-price"><?php echo isset($sale['GiaKhuyenMai']) ? number_format($sale['GiaKhuyenMai'], 0, ',', '.') : ''; ?>đ</span>
+                <span class="original-price"><?php echo isset($sale['Gia']) ? number_format($sale['Gia'], 0, ',', '.') : ''; ?></span>
+                <span class="discount-price"><?php echo isset($sale['GiaKhuyenMai']) ? number_format($sale['GiaKhuyenMai'], 0, ',', '.') : ''; ?></span>
               </div>
               <div class="add-product">
                 <a href="<?php echo !empty($sale['DuongDanLienKet']) ? htmlspecialchars($sale['DuongDanLienKet']) : '#'; ?>" class="btn-flip" data-back="Thêm vào giỏ" data-front="Mua ngay"></a>

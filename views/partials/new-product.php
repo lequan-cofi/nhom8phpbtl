@@ -1,11 +1,7 @@
-<!--START SAN PHAM MOI-->
 <div id="new-product">
     <div class="left">
         <?php
-        require_once __DIR__ . '/../../controllers/ThietbiController.php';
-        $controller = new ThietBiController();
-        $recentProducts = $controller->getRecentProducts();
-        
+        // Không gọi controller ở đây, chỉ dùng biến $recentProducts đã truyền từ controller
         if (!empty($recentProducts)) {
             $latestProduct = $recentProducts[0]; // Get the newest product
         ?>
@@ -36,8 +32,9 @@
             <?php
             if (!empty($recentProducts)) {
                 // Skip the first product as it's already shown in the left section
-                array_shift($recentProducts);
-                foreach ($recentProducts as $product) {
+                $products = $recentProducts;
+                array_shift($products);
+                foreach ($products as $product) {
             ?>
             <li>
                 <a href="product-detail.php?id=<?php echo $product['ID']; ?>">
