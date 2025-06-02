@@ -18,9 +18,9 @@ class BlogController {
     public function list() {
         try {
             $blogs = $this->blogModel->getAllBlogs();
-            // Lọc bỏ blog draft
+            // Chỉ lấy blog published
             $blogs = array_filter($blogs, function($blog) {
-                return $blog['status'] === 'published';
+                return isset($blog['status']) && $blog['status'] === 'published';
             });
             echo json_encode(['status' => 'success', 'data' => array_values($blogs)]);
         } catch (Exception $e) {
@@ -32,11 +32,11 @@ class BlogController {
     public function get($id) {
         try {
             $blog = $this->blogModel->getBlogById($id);
-            if ($blog) {
+            if ($blog && isset($blog['status']) && $blog['status'] === 'published') {
                 echo json_encode(['status' => 'success', 'data' => $blog]);
             } else {
                 http_response_code(404);
-                echo json_encode(['status' => 'error', 'message' => 'Blog not found']);
+                echo json_encode(['status' => 'error', 'message' => 'Blog not found or not published']);
             }
         } catch (Exception $e) {
             http_response_code(500);

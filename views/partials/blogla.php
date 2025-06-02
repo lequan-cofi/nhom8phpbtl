@@ -8,7 +8,7 @@ $blogModel = new Blog($db);
 // Nếu có tham số id, hiển thị chi tiết bài viết
 if (isset($_GET['id'])) {
     $blog = $blogModel->getBlogById($_GET['id']);
-    if (!$blog) {
+    if (!$blog || !isset($blog['status']) || $blog['status'] !== 'published') {
         echo "<h2>Blog not found!</h2>";
         exit;
     }
@@ -31,7 +31,9 @@ if (isset($_GET['id'])) {
 }
 
 // Nếu không có id, hiển thị danh sách
-$blogs = $blogModel->getAllBlogs();
+$blogs = array_filter($blogModel->getAllBlogs(), function($blog) {
+    return isset($blog['status']) && $blog['status'] === 'published';
+});
 ?>
 
 <div class="blog-container">

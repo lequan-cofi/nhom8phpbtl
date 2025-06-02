@@ -133,7 +133,7 @@ class ThietBiModel {
         WHERE t.NgayXoa IS NULL
         AND t.NgayTao >= DATE_SUB(CURRENT_DATE, INTERVAL 1 MONTH)
         ORDER BY t.NgayTao DESC
-        LIMIT 6";
+        LIMIT 5";
     $stmt = $this->db->prepare($query);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);   
