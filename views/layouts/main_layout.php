@@ -108,16 +108,7 @@ if (file_exists($sidebarPath)) {
 }
 ?>
 </div>
-<div id="sales">
-<?php
-$sidebarPath = APP_PATH . '/views/partials/saleslist.php';
-if (file_exists($sidebarPath)) {
-    require $sidebarPath;
-} else {
-    echo "<p style='color:red;'>Lỗi: Không tìm thấy file saleslist.php</p>";
-}
-?>
-</div>
+
 <div id="blog">
     <?php
     $sidebarPath = APP_PATH . '/views/partials/blog.php';

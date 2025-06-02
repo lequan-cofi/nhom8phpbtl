@@ -42,49 +42,41 @@ class SalesController {
 
 // API endpoint handling
 if (isset($_GET['action']) || isset($_POST['action'])) {
-    header('Content-Type: application/json');
+    header('Content-Type: application/json; charset=utf-8');
     $controller = new SalesController();
     $action = $_GET['action'] ?? $_POST['action'];
-    $response = ['success' => false, 'message' => 'Invalid action'];
-
-    switch ($action) {
-        case 'getAllSales':
-            $response = ['success' => true, 'data' => $controller->getAllSales()];
-            break;
-        case 'getSaleById':
-            if (isset($_GET['id'])) {
-                $response = ['success' => true, 'data' => $controller->getSaleById($_GET['id'])];
-            }
-            break;
-        case 'createSale':
-            if (isset($_POST['IDThietBi']) && isset($_POST['IDKhuyenMai'])) {
-                $response = ['success' => $controller->createSale($_POST)];
-            }
-            break;
-        case 'updateSale':
-            if (isset($_POST['ID']) && isset($_POST['IDThietBi']) && isset($_POST['IDKhuyenMai'])) {
-                $response = ['success' => $controller->updateSale($_POST)];
-            }
-            break;
-        case 'deleteSale':
-            if (isset($_POST['id'])) {
-                $response = ['success' => $controller->deleteSale($_POST['id'])];
-            }
-            break;
-        case 'getDevicesByType':
+    error_log('Action nhận được: ' . $action);
+    try {
+        if ($action === 'getAllSales') {
+            echo json_encode(['success' => true, 'data' => $controller->getAllSales()]);
+        } elseif ($action === 'getSaleById') {
+            $id = $_GET['id'] ?? $_POST['id'];
+            echo json_encode(['success' => true, 'data' => $controller->getSaleById($id)]);
+        } elseif ($action === 'createSale') {
+            $result = $controller->createSale($_POST);
+            echo json_encode(['success' => $result]);
+        } elseif ($action === 'updateSale') {
+            $result = $controller->updateSale($_POST);
+            echo json_encode(['success' => $result]);
+        } elseif ($action === 'deleteSale') {
+            $id = $_POST['id'] ?? $_GET['id'];
+            $result = $controller->deleteSale($id);
+            echo json_encode(['success' => $result]);
+        } elseif ($action === 'getDevicesByType') {
             if (isset($_GET['typeId'])) {
                 $limit = $_GET['limit'] ?? 5;
-                $response = ['success' => true, 'data' => $controller->getDevicesByType($_GET['typeId'], $limit)];
+                echo json_encode(['success' => true, 'data' => $controller->getDevicesByType($_GET['typeId'], $limit)]);
             }
-            break;
-        case 'getPromotionalProductsByPromotion':
+        } elseif ($action === 'getPromotionalProductsByPromotion') {
             if (isset($_GET['promotionId'])) {
                 $limit = $_GET['limit'] ?? 5;
-                $response = ['success' => true, 'data' => $controller->getPromotionalProductsByPromotion($_GET['promotionId'], $limit)];
+                echo json_encode(['success' => true, 'data' => $controller->getPromotionalProductsByPromotion($_GET['promotionId'], $limit)]);
             }
-            break;
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Action không hợp lệ']);
+        }
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'message' => $e->getMessage()]);
     }
-
-    echo json_encode($response);
     exit;
 }

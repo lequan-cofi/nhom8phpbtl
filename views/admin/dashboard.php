@@ -95,16 +95,7 @@
                 </div>
             </a>
         </div>
-        <div class="col-md-4">
-            <a href="admin_saleslist.php" class="text-decoration-none">
-                <div class="card shadow-sm h-100 text-center">
-                    <div class="card-body">
-                        <i class="fas fa-list-ol fa-2x mb-2"></i>
-                        <h5 class="card-title">Quản lý Danh sách Ưu đãi</h5>
-                    </div>
-                </div>
-            </a>
-        </div>
+      
         <div class="col-md-4">
             <a href="admin_poster.php" class="text-decoration-none">
                 <div class="card shadow-sm h-100 text-center">

@@ -23,7 +23,6 @@ class PosterModel {
         $query = "SELECT ps.*, km.TenKhuyenMai 
                  FROM {$this->table} ps 
                  JOIN khuyenmai km ON ps.IDKhuyenMai = km.ID 
-                 WHERE ps.IsActive = 1 
                  ORDER BY ps.ID DESC";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
@@ -42,8 +41,8 @@ class PosterModel {
     }
 
     public function create() {
-        $query = "INSERT INTO {$this->table} (Title, Description, Image, IDKhuyenMai, MaxDisplayProducts, IsActive) 
-                 VALUES (:title, :description, :image, :idkhuyenmai, :maxDisplay, :isActive)";
+        $query = "INSERT INTO {$this->table} (Title, Description, Image, IDKhuyenMai, MaxDisplayProducts, IsActive, NgayTao) 
+                 VALUES (:title, :description, :image, :idkhuyenmai, :maxDisplay, :isActive, CURRENT_TIMESTAMP)";
         
         $stmt = $this->db->prepare($query);
         
@@ -52,7 +51,7 @@ class PosterModel {
         $stmt->bindParam(':image', $this->Image);
         $stmt->bindParam(':idkhuyenmai', $this->IDKhuyenMai);
         $stmt->bindParam(':maxDisplay', $this->MaxDisplayProducts);
-        $stmt->bindParam(':isActive', $this->IsActive);
+        $stmt->bindParam(':isActive', $this->IsActive, PDO::PARAM_INT);
 
         if ($stmt->execute()) {
             return ['success' => true, 'id' => $this->db->lastInsertId()];
@@ -73,13 +72,13 @@ class PosterModel {
         
         $stmt = $this->db->prepare($query);
         
-        $stmt->bindParam(':id', $this->ID);
+        $stmt->bindParam(':id', $this->ID, PDO::PARAM_INT);
         $stmt->bindParam(':title', $this->Title);
         $stmt->bindParam(':description', $this->Description);
         $stmt->bindParam(':image', $this->Image);
-        $stmt->bindParam(':idkhuyenmai', $this->IDKhuyenMai);
-        $stmt->bindParam(':maxDisplay', $this->MaxDisplayProducts);
-        $stmt->bindParam(':isActive', $this->IsActive);
+        $stmt->bindParam(':idkhuyenmai', $this->IDKhuyenMai, PDO::PARAM_INT);
+        $stmt->bindParam(':maxDisplay', $this->MaxDisplayProducts, PDO::PARAM_INT);
+        $stmt->bindParam(':isActive', $this->IsActive, PDO::PARAM_INT);
 
         if ($stmt->execute()) {
             return ['success' => true];

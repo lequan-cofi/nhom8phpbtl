@@ -1,45 +1,21 @@
 <?php require_once 'partials/header.php'; ?>
 <?php
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type, Authorization');
-if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
-    exit(0);
-}
-require_once __DIR__ . '/../../controllers/salesController.php';
-require_once __DIR__ . '/../../models/LoaiThietBiModel.php';
+require_once __DIR__ . '/../../controllers/admin_saleController.php';
+$controller = new AdminSaleController();
+$sales = $controller->getAll();
+$thietbi = $controller->getAllThietBi();
+$khuyenmai = $controller->getAllKhuyenMai();
 
-// Lấy danh sách sản phẩm khuyến mãi
-$salesController = new SalesController();
-$sales = $salesController->getAllSales();
-
-// Lấy danh sách thiết bị
-$db = db_connect();
-$thietbi = $db->query("SELECT ID, Ten FROM thietbi WHERE NgayXoa IS NULL")->fetchAll(PDO::FETCH_ASSOC);
-// Lấy danh sách khuyến mãi
-$khuyenmai = $db->query("SELECT ID, TenKhuyenMai FROM khuyenmai WHERE NgayXoa IS NULL")->fetchAll(PDO::FETCH_ASSOC);
-
-// Tìm kiếm theo tên sản phẩm
-$search = isset($_GET['search']) ? trim($_GET['search']) : '';
-if ($search !== '') {
-    $sales = array_filter($sales, function($sale) use ($search) {
-        return stripos($sale['TenThietBi'], $search) !== false;
+// Lọc khuyến mãi đang diễn ra nếu có tham số GET
+$showActive = isset($_GET['active']) && $_GET['active'] == '1';
+if ($showActive) {
+    $now = date('Y-m-d H:i:s');
+    $sales = array_filter($sales, function($sale) use ($now) {
+        $start = $sale['NgayBatDau'] ?? null;
+        $end = $sale['NgayKetThuc'] ?? null;
+        return (!$start || $start <= $now) && (!$end || $end >= $now);
     });
 }
-// Lọc theo tên khuyến mãi (dùng select)
-$filterKM = isset($_GET['khuyenmai']) ? $_GET['khuyenmai'] : '';
-if ($filterKM !== '') {
-    $sales = array_filter($sales, function($sale) use ($filterKM) {
-        return $sale['TenKhuyenMai'] === $filterKM;
-    });
-}
-// Phân trang
-$page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
-$perPage = 10;
-$totalSales = count($sales);
-$totalPages = ceil($totalSales / $perPage);
-$sales = array_values($sales);
-$sales = array_slice($sales, ($page - 1) * $perPage, $perPage);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -65,16 +41,11 @@ $sales = array_slice($sales, ($page - 1) * $perPage, $perPage);
                     </button>
                 </div>
                 <div class="card-body">
-                    <!-- Form lọc -->
-                    <form method="GET" class="form-inline mb-3">
-                        <input type="text" name="search" class="form-control mr-2" placeholder="Tìm theo tên sản phẩm" value="<?php echo htmlspecialchars($search); ?>">
-                        <select name="khuyenmai" class="form-control mr-2">
-                            <option value="">Tất cả khuyến mãi</option>
-                            <?php foreach ($khuyenmai as $km): ?>
-                                <option value="<?php echo htmlspecialchars($km['TenKhuyenMai']); ?>" <?php if($filterKM === $km['TenKhuyenMai']) echo 'selected'; ?>><?php echo htmlspecialchars($km['TenKhuyenMai']); ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                        <button type="submit" class="btn btn-primary"><i class="fas fa-filter"></i> Lọc</button>
+                    <form method="get" class="form-inline mb-3">
+                        <div class="form-group mr-2">
+                            <label for="active" class="mr-1">Chỉ hiển thị khuyến mãi đang diễn ra</label>
+                            <input type="checkbox" id="active" name="active" value="1" <?php if($showActive) echo 'checked'; ?> onchange="this.form.submit()">
+                        </div>
                     </form>
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered">
@@ -84,7 +55,7 @@ $sales = array_slice($sales, ($page - 1) * $perPage, $perPage);
                                     <th>Tên thiết bị</th>
                                     <th>Tên khuyến mãi</th>
                                     <th>Giá gốc</th>
-                                    <th>Giá sau KM</th>
+                                    <th>Mức giảm (%)</th>
                                     <th>Ngày tạo</th>
                                     <th>Thao tác</th>
                                 </tr>
@@ -96,7 +67,7 @@ $sales = array_slice($sales, ($page - 1) * $perPage, $perPage);
                                     <td><?= htmlspecialchars($sale['TenThietBi'] ?? '') ?></td>
                                     <td><?= htmlspecialchars($sale['TenKhuyenMai'] ?? '') ?></td>
                                     <td><?php echo isset($sale['Gia']) ? number_format($sale['Gia'], 0, ',', '.') : ''; ?></td>
-                                    <td><?php echo isset($sale['GiaKhuyenMai']) ? number_format($sale['GiaKhuyenMai'], 0, ',', '.') : ''; ?></td>
+                                    <td><?php echo isset($sale['MucGiamGia']) ? $sale['MucGiamGia'] : ''; ?></td>
                                     <td><?= htmlspecialchars($sale['NgayTao'] ?? '') ?></td>
                                     <td>
                                         <button class="btn btn-sm btn-info edit-sale" 
@@ -115,22 +86,6 @@ $sales = array_slice($sales, ($page - 1) * $perPage, $perPage);
                             </tbody>
                         </table>
                     </div>
-                    <!-- PHÂN TRANG -->
-                    <?php if ($totalPages > 1): ?>
-                    <nav>
-                        <ul class="pagination justify-content-center">
-                            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                                <li class="page-item <?php if ($i == $page) echo 'active'; ?>">
-                                    <a class="page-link" href="?<?php
-                                        $params = $_GET;
-                                        $params['page'] = $i;
-                                        echo http_build_query($params);
-                                    ?>"><?php echo $i; ?></a>
-                                </li>
-                            <?php endfor; ?>
-                        </ul>
-                    </nav>
-                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -224,16 +179,12 @@ $(document).ready(function() {
     $('#addSaleForm').on('submit', function(e) {
         e.preventDefault();
         var formData = $(this).serialize();
-        $.post('/iStore_PHP_Backend/controllers/salesController.php?action=createSale', formData, function(response) {
-            try {
-                if (typeof response === 'string') response = JSON.parse(response);
-                if (response.success) {
-                    Swal.fire('Thành công!', 'Thêm thành công!', 'success').then(() => location.reload());
-                } else {
-                    Swal.fire('Lỗi!', response.message || 'Có lỗi xảy ra khi thêm', 'error');
-                }
-            } catch (err) {
-                Swal.fire('Lỗi!', 'Phản hồi không hợp lệ từ máy chủ: ' + response, 'error');
+        $.post('/iStore_PHP_Backend/controllers/admin_saleController.php?action=create', formData, function(response) {
+            if (typeof response === 'string') response = JSON.parse(response);
+            if (response.success) {
+                Swal.fire('Thành công!', 'Thêm thành công!', 'success').then(() => location.reload());
+            } else {
+                Swal.fire('Lỗi!', response.message || 'Có lỗi xảy ra khi thêm', 'error');
             }
         });
     });
@@ -242,20 +193,21 @@ $(document).ready(function() {
     $('.edit-sale').click(function() {
         var id = $(this).data('id');
         $.ajax({
-            url: '/iStore_PHP_Backend/controllers/salesController.php?action=getSaleById&id=' + id,
+            url: '/iStore_PHP_Backend/controllers/admin_saleController.php?action=getOne&id=' + id,
             type: 'GET',
             success: function(response) {
+                if (typeof response === 'string') response = JSON.parse(response);
                 if(response.success) {
                     var sale = response.data;
                     $('#editID').val(sale.ID);
                     $('#editIDThietBi').val(sale.IDThietBi);
                     $('#editIDKhuyenMai').val(sale.IDKhuyenMai);
                 } else {
-                    alert('Có lỗi: ' + (response.message || 'Không xác định'));
+                    Swal.fire('Lỗi!', response.message || 'Không xác định', 'error');
                 }
             },
             error: function(xhr, status, error) {
-                alert('Có lỗi khi lấy thông tin: ' + error);
+                Swal.fire('Lỗi!', 'Có lỗi khi lấy thông tin: ' + error, 'error');
             }
         });
     });
@@ -265,19 +217,16 @@ $(document).ready(function() {
         e.preventDefault();
         var formData = $(this).serialize();
         $.ajax({
-            url: '/iStore_PHP_Backend/controllers/salesController.php?action=updateSale',
+            url: '/iStore_PHP_Backend/controllers/admin_saleController.php?action=update',
             type: 'POST',
             data: formData,
             success: function(response) {
+                if (typeof response === 'string') response = JSON.parse(response);
                 if(response.success) {
-                    alert('Cập nhật thành công!');
-                    location.reload();
+                    Swal.fire('Cập nhật thành công!', '', 'success').then(() => location.reload());
                 } else {
-                    alert('Có lỗi: ' + (response.message || 'Không xác định'));
+                    Swal.fire('Lỗi!', response.message || 'Có lỗi xảy ra khi cập nhật', 'error');
                 }
-            },
-            error: function(xhr, status, error) {
-                alert('Có lỗi khi cập nhật: ' + error);
             }
         });
     });
@@ -287,7 +236,7 @@ $(document).ready(function() {
         if(confirm('Bạn có chắc chắn muốn xóa bản ghi này?')) {
             var id = $(this).data('id');
             $.ajax({
-                url: '/iStore_PHP_Backend/controllers/salesController.php?action=deleteSale',
+                url: '/iStore_PHP_Backend/controllers/admin_saleController.php?action=delete',
                 type: 'POST',
                 data: { id: id },
                 success: function(response) {
@@ -297,9 +246,6 @@ $(document).ready(function() {
                     } else {
                         Swal.fire('Lỗi!', response.message || 'Không thể xóa.', 'error');
                     }
-                },
-                error: function(xhr, status, error) {
-                    Swal.fire('Lỗi!', 'Có lỗi khi xóa: ' + error, 'error');
                 }
             });
         }

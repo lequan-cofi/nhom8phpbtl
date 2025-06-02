@@ -34,7 +34,8 @@
                 <li class="nav-item"><a class="nav-link" href="admin_hinhanhthietbi.php">Hình ảnh Thiết bị</a></li>
                 <li class="nav-item"><a class="nav-link" href="admin_khuyenmai.php">Khuyến mãi</a></li>
                 <li class="nav-item"><a class="nav-link" href="admin_sales.php">Sản phẩm KM</a></li>
-                <li class="nav-item"><a class="nav-link" href="admin_saleslist.php">DS Ưu đãi</a></li>
+                <li class="nav-item"><a class="nav-link" href="admin_content.php">Nội dung</a></li>
+              
                 <li class="nav-item"><a class="nav-link" href="admin_poster.php">Poster</a></li>
                 <li class="nav-item"><a class="nav-link" href="admin_nguoidung.php">Người dùng</a></li>
                 <li class="nav-item"><a class="nav-link" href="../../public/index.php">Về trang người dùng</a></li>

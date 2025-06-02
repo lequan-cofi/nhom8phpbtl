@@ -19,10 +19,7 @@ class SalesModel {
                 FROM SanPham_KhuyenMai s
                 JOIN thietbi t ON s.IDThietBi = t.ID
                 JOIN khuyenmai k ON s.IDKhuyenMai = k.ID
-                WHERE (k.NgayBatDau IS NULL OR k.NgayBatDau <= NOW())
-                  AND (k.NgayKetThuc IS NULL OR k.NgayKetThuc >= NOW())
-                  AND k.MucGiamGia > 0
-                  AND k.NgayXoa IS NULL
+                WHERE k.NgayXoa IS NULL
                 ORDER BY s.NgayTao DESC";
         return $this->db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -53,8 +50,7 @@ class SalesModel {
     }
 
     public function createSale($data) {
-        $sql = "INSERT INTO {$this->table} (IDThietBi, IDKhuyenMai) 
-                VALUES (:IDThietBi, :IDKhuyenMai)";
+        $sql = "INSERT INTO SanPham_KhuyenMai (IDThietBi, IDKhuyenMai) VALUES (:IDThietBi, :IDKhuyenMai)";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([
             'IDThietBi' => $data['IDThietBi'],
@@ -63,11 +59,7 @@ class SalesModel {
     }
 
     public function updateSale($data) {
-        $sql = "UPDATE {$this->table} 
-                SET IDThietBi = :IDThietBi, 
-                    IDKhuyenMai = :IDKhuyenMai,
-                    NgayCapNhat = CURRENT_TIMESTAMP
-                WHERE ID = :ID";
+        $sql = "UPDATE SanPham_KhuyenMai SET IDThietBi = :IDThietBi, IDKhuyenMai = :IDKhuyenMai WHERE ID = :ID";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([
             'ID' => $data['ID'],
@@ -77,7 +69,7 @@ class SalesModel {
     }
 
     public function deleteSale($id) {
-        $sql = "DELETE FROM {$this->table} WHERE ID = :id";
+        $sql = "DELETE FROM SanPham_KhuyenMai WHERE ID = :id";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute(['id' => $id]);
     }

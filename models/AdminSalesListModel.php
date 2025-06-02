@@ -18,11 +18,20 @@ class AdminSalesListModel {
     }
 
     public function getAll() {
-        $query = "SELECT ass.*, ltb.Ten as TenLoaiThietBi 
-                 FROM {$this->table} ass 
-                 JOIN loaithietbi ltb ON ass.IDLoaiThietBi = ltb.ID 
-                 WHERE ass.IsActive = 1 
-                 ORDER BY ass.ID DESC";
+        $query = "
+SELECT ass.*, ltb.Ten as TenLoaiThietBi, t.Ten as TenThietBi, t.Gia, t.SoLuongTonKho, t.DuongDanLienKet
+FROM {$this->table} ass
+JOIN loaithietbi ltb ON ass.IDLoaiThietBi = ltb.ID
+JOIN (
+    SELECT *
+    FROM thietbi
+    WHERE NgayXoa IS NULL
+    ORDER BY NgayTao DESC
+) t ON t.IDLoaiThietBi = ltb.ID
+WHERE ass.IsActive = 1
+GROUP BY t.IDLoaiThietBi
+ORDER BY t.NgayTao DESC
+";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
         return $stmt;

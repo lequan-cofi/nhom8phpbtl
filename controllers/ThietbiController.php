@@ -65,6 +65,10 @@ class ThietBiController {
         $data = $this->model->getThongSoByThietBi($id);
         return ['success' => true, 'data' => $data];
     }
+
+    public function saveSpecs($deviceId, $specs) {
+        return $this->model->saveSpecs($deviceId, $specs);
+    }
 }
 
 // API endpoints
@@ -106,6 +110,11 @@ if (isset($_GET['action']) || isset($_POST['action'])) {
             $id = $_GET['id'];
             $data = $controller->getSpecs($id);
             echo json_encode($data);
+        } elseif ($action === 'saveSpecs') {
+            $deviceId = $_POST['IDThietBi'];
+            $specs = $_POST['specs'];
+            $result = $controller->saveSpecs($deviceId, $specs);
+            echo json_encode($result);
         } else {
             echo json_encode(['success' => false, 'message' => 'Action không hợp lệ']);
         }

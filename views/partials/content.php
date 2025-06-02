@@ -22,9 +22,7 @@ $rightContent3 = isset($contents[3]) ? $contents[3] : null;
                         <?php echo htmlspecialchars($mainContent->MoTa); ?>
                     </div>
                     <div class="button-1">
-                        <form action="<?php echo htmlspecialchars($mainContent->DuongDanLienKet); ?>" class="button-1-1">
-                            <button type="submit">Xem ngay</button>
-                        </form>
+                        
                     </div>
                 </div>
             </div>
@@ -44,9 +42,7 @@ $rightContent3 = isset($contents[3]) ? $contents[3] : null;
                     <?php echo htmlspecialchars($rightContent1->MoTa); ?>
                 </div>
                 <div class="button-2">
-                    <form action="<?php echo htmlspecialchars($rightContent1->DuongDanLienKet); ?>">
-                        <button type="submit">Mua ngay</button>
-                    </form>
+                    
                 </div>
             </div>
         </div>
@@ -64,9 +60,7 @@ $rightContent3 = isset($contents[3]) ? $contents[3] : null;
                         <?php echo htmlspecialchars($rightContent2->MoTa); ?>
                     </div>
                     <div class="button-2 button-3">
-                        <form action="<?php echo htmlspecialchars($rightContent2->DuongDanLienKet); ?>">
-                            <button type="submit">Xem ngay</button>
-                        </form>
+                       
                     </div>
                 </div>
             </div>
@@ -83,9 +77,7 @@ $rightContent3 = isset($contents[3]) ? $contents[3] : null;
                         <?php echo htmlspecialchars($rightContent3->MoTa); ?>
                     </div>
                     <div class="button-2 button-3">
-                        <form action="<?php echo htmlspecialchars($rightContent3->DuongDanLienKet); ?>">
-                            <button type="submit">Mua ngay</button>
-                        </form>
+                        
                     </div>
                 </div>
             </div>

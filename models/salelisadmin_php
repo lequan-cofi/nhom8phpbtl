@@ -1,0 +1,111 @@
+<?php
+require_once __DIR__ . '/../config/database.php';
+
+class AdminSalesListModel {
+    private $db;
+    private $settingsTable = 'admin_sales_list_settings';
+    private $deviceTypeTable = 'loaithietbi';
+    private $deviceTable = 'thietbi';
+
+    public $ID;
+    public $IDLoaiThietBi;
+    public $SoLuongHienThi;
+    public $IsActive;
+    public $NgayTao;
+    public $NgayCapNhat;
+    public $NgayXoa;
+
+    public function __construct() {
+        $this->db = db_connect();
+    }
+
+    public function getAllSettings() {
+        $query = "SELECT s.*, l.Ten as TenLoaiThietBi 
+                 FROM {$this->settingsTable} s 
+                 JOIN {$this->deviceTypeTable} l ON s.IDLoaiThietBi = l.ID 
+                 WHERE s.NgayXoa IS NULL 
+                 ORDER BY s.ID DESC";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getOneSetting($id) {
+        $query = "SELECT s.*, l.Ten as TenLoaiThietBi 
+                 FROM {$this->settingsTable} s 
+                 JOIN {$this->deviceTypeTable} l ON s.IDLoaiThietBi = l.ID 
+                 WHERE s.ID = ? AND s.NgayXoa IS NULL";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(1, $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function create() {
+        $query = "INSERT INTO {$this->settingsTable} 
+                 (IDLoaiThietBi, SoLuongHienThi, IsActive, NgayTao) 
+                 VALUES (:idLoaiThietBi, :soLuongHienThi, :isActive, CURRENT_TIMESTAMP)";
+        
+        $stmt = $this->db->prepare($query);
+        
+        $stmt->bindParam(':idLoaiThietBi', $this->IDLoaiThietBi, PDO::PARAM_INT);
+        $stmt->bindParam(':soLuongHienThi', $this->SoLuongHienThi, PDO::PARAM_INT);
+        $stmt->bindParam(':isActive', $this->IsActive, PDO::PARAM_INT);
+
+        if ($stmt->execute()) {
+            return ['success' => true, 'id' => $this->db->lastInsertId()];
+        }
+        return ['success' => false, 'message' => 'Lỗi khi thêm cài đặt!'];
+    }
+
+    public function update() {
+        $query = "UPDATE {$this->settingsTable} 
+                 SET IDLoaiThietBi = :idLoaiThietBi,
+                     SoLuongHienThi = :soLuongHienThi,
+                     IsActive = :isActive,
+                     NgayCapNhat = CURRENT_TIMESTAMP
+                 WHERE ID = :id AND NgayXoa IS NULL";
+        
+        $stmt = $this->db->prepare($query);
+        
+        $stmt->bindParam(':id', $this->ID, PDO::PARAM_INT);
+        $stmt->bindParam(':idLoaiThietBi', $this->IDLoaiThietBi, PDO::PARAM_INT);
+        $stmt->bindParam(':soLuongHienThi', $this->SoLuongHienThi, PDO::PARAM_INT);
+        $stmt->bindParam(':isActive', $this->IsActive, PDO::PARAM_INT);
+
+        if ($stmt->execute()) {
+            return ['success' => true];
+        }
+        return ['success' => false, 'message' => 'Lỗi khi cập nhật cài đặt!'];
+    }
+
+    public function delete($id) {
+        $query = "UPDATE {$this->settingsTable} 
+                 SET NgayXoa = CURRENT_TIMESTAMP 
+                 WHERE ID = ?";
+        $stmt = $this->db->prepare($query);
+        return $stmt->execute([$id]);
+    }
+
+    public function getDeviceTypes() {
+        $query = "SELECT ID, Ten 
+                 FROM {$this->deviceTypeTable} 
+                 WHERE NgayXoa IS NULL 
+                 ORDER BY Ten ASC";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getActiveSettings() {
+        $query = "SELECT s.*, l.Ten as TenLoaiThietBi 
+                 FROM {$this->settingsTable} s 
+                 JOIN {$this->deviceTypeTable} l ON s.IDLoaiThietBi = l.ID 
+                 WHERE s.IsActive = 1 
+                 AND s.NgayXoa IS NULL 
+                 ORDER BY s.ID DESC";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+}

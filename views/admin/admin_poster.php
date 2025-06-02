@@ -4,6 +4,11 @@ require_once __DIR__ . '/../../controllers/PosterController.php';
 $posterController = new PosterController();
 $posters = $posterController->getAll();
 $promotions = $posterController->getPromotions();
+
+// Đảm bảo $posters là một mảng
+if (!is_array($posters)) {
+    $posters = [];
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -280,16 +285,16 @@ $(document).ready(function() {
             return;
         }
 
-        var formData = $('#addPosterForm').serialize();
-        console.log('Sending form data:', formData);
+        var formData = new FormData($('#addPosterForm')[0]);
+        formData.append('IsActive', $('#isActive').is(':checked') ? 1 : 0);
         
         $.ajax({
             url: '../../controllers/PosterController.php?action=create',
             type: 'POST',
             data: formData,
-            dataType: 'json',
+            processData: false,
+            contentType: false,
             success: function(response) {
-                console.log('Server response:', response);
                 if (response.success) {
                     location.reload();
                 } else {
@@ -297,7 +302,7 @@ $(document).ready(function() {
                 }
             },
             error: function(xhr, status, error) {
-                console.error('Ajax error:', {xhr: xhr, status: status, error: error});
+                console.error('Ajax error:', error);
                 alert('Lỗi kết nối: ' + error);
             }
         });
@@ -324,16 +329,16 @@ $(document).ready(function() {
             return;
         }
 
-        var formData = $('#editPosterForm').serialize();
-        console.log('Sending update data:', formData);
+        var formData = new FormData($('#editPosterForm')[0]);
+        formData.append('IsActive', $('#editIsActive').is(':checked') ? 1 : 0);
         
         $.ajax({
             url: '../../controllers/PosterController.php?action=update',
             type: 'POST',
             data: formData,
-            dataType: 'json',
+            processData: false,
+            contentType: false,
             success: function(response) {
-                console.log('Server response:', response);
                 if (response.success) {
                     location.reload();
                 } else {
@@ -341,7 +346,7 @@ $(document).ready(function() {
                 }
             },
             error: function(xhr, status, error) {
-                console.error('Ajax error:', {xhr: xhr, status: status, error: error});
+                console.error('Ajax error:', error);
                 alert('Lỗi kết nối: ' + error);
             }
         });

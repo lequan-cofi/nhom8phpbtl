@@ -186,4 +186,12 @@ class ThietBiModel {
         $stmt = $this->db->prepare($sql);
         return $stmt->execute(['idThietBi' => $idThietBi, 'idThongSo' => $idThongSo]);
     }
+
+    // Lưu tất cả thông số kỹ thuật cho một thiết bị
+    public function saveSpecs($idThietBi, $specs) {
+        foreach ($specs as $idThongSo => $giaTri) {
+            $this->setThongSoThietBi($idThietBi, $idThongSo, $giaTri);
+        }
+        return ['success' => true];
+    }
 }

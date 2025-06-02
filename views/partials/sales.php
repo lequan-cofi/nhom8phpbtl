@@ -4,6 +4,14 @@
 require_once __DIR__ . '/../../controllers/salesController.php';
 $salesController = new SalesController();
 $sales = $salesController->getAllSales();
+
+// Lọc chỉ các sản phẩm trong ưu đãi đang diễn ra
+$now = date('Y-m-d H:i:s');
+$sales = array_filter($sales, function($sale) use ($now) {
+  $start = $sale['NgayBatDau'] ?? null;
+  $end = $sale['NgayKetThuc'] ?? null;
+  return (!$start || $start <= $now) && (!$end || $end >= $now);
+});
 ?>
 <!--START UU DAI-->
 <div id="sales">

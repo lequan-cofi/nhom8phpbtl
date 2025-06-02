@@ -38,8 +38,7 @@ $settings = $adminSalesListController->getAllSettings();
                   Còn hàng
                 </p>
                 <div class="product-price">
-                  <span class="original-price"><?php echo isset($device['Gia']) ? number_format($device['Gia'], 0, ',', '.') : ''; ?></span>
-                  <span class="discount-price"><?php echo isset($device['GiaKhuyenMai']) ? number_format($device['GiaKhuyenMai'], 0, ',', '.') : ''; ?></span>
+                  <span class="original-price"><?php echo isset($device['Gia']) ? number_format($device['Gia'], 0, ',', '.') : ''; ?>đ</span>
                 </div>
                 <div class="add-product">
                   <a href="<?php echo !empty($device['DuongDanLienKet']) ? htmlspecialchars($device['DuongDanLienKet']) : '#'; ?>" class="btn-flip" data-back="Thêm vào giỏ" data-front="Mua ngay"></a>
@@ -67,5 +66,4 @@ $settings = $adminSalesListController->getAllSettings();
     </ul>
   <?php endforeach; ?>
 </div>
-
 <!--END UU DAI-->

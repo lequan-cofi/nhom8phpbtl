@@ -427,6 +427,14 @@ $(document).ready(function() {
             }
         });
     });
+
+    $('.modal').on('show.bs.modal', function () {
+        $(this).removeAttr('inert');
+    });
+    $('.modal').on('hidden.bs.modal', function () {
+        $(this).attr('inert', '');
+        $('body').focus();
+    });
 });
 </script>
 <?php require_once 'partials/footer.php'; ?>

@@ -183,7 +183,9 @@ $khuyenmais = array_slice($khuyenmais, ($page - 1) * $perPage, $perPage);
         <form class="modal-content" method="POST">
             <div class="modal-header">
                 <h5 class="modal-title">Thêm khuyến mãi</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <div class="mb-3">
@@ -204,7 +206,7 @@ $khuyenmais = array_slice($khuyenmais, ($page - 1) * $perPage, $perPage);
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
                 <button type="submit" name="add_km" class="btn btn-success">Thêm</button>
             </div>
         </form>
@@ -219,7 +221,9 @@ $khuyenmais = array_slice($khuyenmais, ($page - 1) * $perPage, $perPage);
             <input type="hidden" name="id" value="<?php echo $km['ID']; ?>">
             <div class="modal-header">
                 <h5 class="modal-title">Sửa khuyến mãi</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <div class="mb-3">
@@ -240,7 +244,7 @@ $khuyenmais = array_slice($khuyenmais, ($page - 1) * $perPage, $perPage);
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
                 <button type="submit" name="edit_km" class="btn btn-primary">Lưu</button>
             </div>
         </form>
@@ -248,6 +252,7 @@ $khuyenmais = array_slice($khuyenmais, ($page - 1) * $perPage, $perPage);
 </div>
 <?php endforeach; ?>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
