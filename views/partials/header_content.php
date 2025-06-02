@@ -2,11 +2,14 @@
 // views/partials/header_content.php
 // BASE_URL đã được define trong public/index.php và có sẵn ở main_layout.php
 ?>
+
 <a class="logo" href="<?php echo BASE_URL; ?>/index.php">
     <img src="<?php echo BASE_URL; ?>/assets/img/logo.png" alt="iStore Logo" width="220px" height="40px" />
 </a>
-<form action="index.php" method="GET" class="search-bar">
-    <input type="hidden" name="page" value="search"> <input type="text" id="search" placeholder="Tìm sản phẩm..." name="query" /> <button type="submit"><i class="ti-search"></i></button>
+<form action="<?php echo BASE_URL; ?>/index.php" method="get"  class="search-bar">
+    <input type="hidden" name="page" value="search">
+    <input type="text" name="q" autocomplete="off" placeholder="Tìm kiếm sản phẩm...">
+    <button type="submit"><i class="ti-search"></i></button>
 </form>
 <ul class="subnav">
     <li>

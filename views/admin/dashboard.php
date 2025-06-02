@@ -13,6 +13,29 @@
             </a>
         </div>
         <div class="col-md-4">
+            <a href="admin_phanhoi.php" class="text-decoration-none">
+                <div class="card shadow-sm h-100 text-center">
+                    <div class="card-body">
+                        <i class="fas fa-comments fa-2x mb-2"></i>
+                        <h5 class="card-title">Quản lý Phản hồi</h5>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="admin_donhang.php" class="text-decoration-none">
+                <div class="card shadow-sm h-100 text-center">
+                    <div class="card-body">
+                        <i class="fas fa-shopping-cart fa-2x mb-2"></i>
+                        <h5 class="card-title">Quản lý Đơn hàng</h5>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div>
+
+        </div>
+        <div class="col-md-4">
             <a href="admin_blog.php" class="text-decoration-none">
                 <div class="card shadow-sm h-100 text-center">
                     <div class="card-body">
@@ -92,6 +115,37 @@
                 </div>
             </a>
         </div>
+        <div class="col-md-4">
+            <a href="admin_nguoidung.php" class="text-decoration-none">
+                <div class="card shadow-sm h-100 text-center">
+                    <div class="card-body">
+                        <i class="fas fa-users fa-2x mb-2"></i>
+                        <h5 class="card-title">Quản lý Người dùng</h5>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="admin_khuyenmai.php" class="text-decoration-none">
+                <div class="card shadow-sm h-100 text-center">
+                    <div class="card-body">
+                        <i class="fas fa-tags fa-2x mb-2"></i>
+                        <h5 class="card-title">Quản lý Khuyến mãi</h5>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="addmin_phantich.php" class="text-decoration-none">
+                <div class="card shadow-sm h-100 text-center">
+                    <div class="card-body">
+                        <i class="fas fa-chart-line fa-2x mb-2"></i>
+                        <h5 class="card-title">Phân tích</h5>
+                    </div>
+                </div>
+            </a>
+        </div>
+        
     </div>
 </div>
 <?php require_once 'partials/footer.php'; ?> 

@@ -1,12 +1,13 @@
 <div id="new-product">
     <div class="left">
         <?php
-        // Không gọi controller ở đây, chỉ dùng biến $recentProducts đã truyền từ controller
-        if (!empty($recentProducts)) {
-            $latestProduct = $recentProducts[0]; // Get the newest product
-        ?>
+            // Không gọi controller ở đây, chỉ dùng biến $recentProducts đã truyền từ controller
+            if (!empty($recentProducts)) {
+                $latestProduct = $recentProducts[0]; // Get the newest product
+              
+            ?>
         <div class="new-iphone">
-            <img src="<?php echo htmlspecialchars($latestProduct['DuongDanLienKet']); ?>" alt="<?php echo htmlspecialchars($latestProduct['Ten']); ?>">
+            <img src="<?php echo htmlspecialchars($latestProduct['HinhAnh'] ?? ''); ?>" alt="<?php echo htmlspecialchars($latestProduct['Ten'] ?? ''); ?>" width="227.34px" height="259.81px">
         </div>
 
         <div class="new-item">
@@ -19,7 +20,7 @@
 
             <div class="button-2">
                 <form action="">
-                    <button type="submit">Mua ngay</button>
+                    <a href="<?php echo BASE_URL; ?>/index.php?page=product&action=detail&id=<?php echo $latestProduct['ID']; ?>" class="button" style="text-decoration: none; font-size: 25px; font-weight: bold; background-color: #1c61e7; color: white; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Mua ngay</a>
                 </form>
             </div>
         </div>
@@ -37,7 +38,7 @@
                 foreach ($products as $product) {
             ?>
             <li>
-                <a href="product-detail.php?id=<?php echo $product['ID']; ?>">
+                <a href="<?php echo BASE_URL; ?>/index.php?page=product&action=detail&id=<?php echo $product['ID']; ?>">
                     <div class="wrapper-product">
                         <?php if (strtotime($product['NgayTao']) > strtotime('-7 days')) { ?>
                         <div class="label">
@@ -45,7 +46,7 @@
                         </div>
                         <?php } ?>
 
-                        <img src="<?php echo htmlspecialchars($product['DuongDanLienKet']); ?>" alt="<?php echo htmlspecialchars($product['Ten']); ?>" width="227.34px" height="259.81px">
+                        <img src="<?php echo htmlspecialchars($product['HinhAnh'] ?? ''); ?>" alt="<?php echo htmlspecialchars($product['Ten']); ?>" width="227.34px" height="259.81px">
                         <div class="product-element-bottom">
                             <h3 class="product-title"><?php echo htmlspecialchars($product['Ten']); ?></h3>
                             <div class="product-cats"><?php echo htmlspecialchars($product['TenLoaiThietBi']); ?></div>
@@ -65,7 +66,7 @@
                                 <i class="fa-solid fa-dong-sign" style="color: #4599e8;"></i>
                             </div>
                             <div class="add-product">
-                                <a href="product-detail.php?id=<?php echo $product['ID']; ?>" class="btn-flip" data-back="Thêm vào giỏ" data-front="Mua ngay"></a>
+                                <a href="<?php echo BASE_URL; ?>/index.php?page=product&action=detail&id=<?php echo $product['ID']; ?>" class="btn-flip" data-back="Thêm vào giỏ" data-front="Mua ngay"></a>
                             </div>
                             <div class="product-code">
                                 <div class="product-name">

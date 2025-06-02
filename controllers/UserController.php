@@ -27,16 +27,18 @@ class UserController {
     }
     // Xem hồ sơ
     public function taikhoankh() {
-        $user = $this->userModel->getUserById($this->currentUser['ID']);
+        $userId = $this->currentUser['ID'] ?? $this->currentUser['id'] ?? null;
+        $user = $this->userModel->getUserById($userId);
         require __DIR__ . '/../views/layouts/taikhoankh.php';
     }
     public function profile() {
-        $user = $this->userModel->getUserById($this->currentUser['ID']);
+        $userId = $this->currentUser['ID'] ?? $this->currentUser['id'] ?? null;
+        $user = $this->userModel->getUserById($userId);
         require __DIR__ . '/../views/layouts/taikhoankh.php';
     }
     // Đổi mật khẩu
     public function changePassword() {
-        $userId = $this->currentUser['ID'];
+        $userId = $this->currentUser['ID'] ?? $this->currentUser['id'] ?? null;
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $new = $_POST['new_password'] ?? '';
             $confirm = $_POST['confirm_password'] ?? '';
@@ -52,7 +54,7 @@ class UserController {
     }
     // Địa chỉ nhận hàng (giả sử 1 địa chỉ, lấy/sửa trong bảng nguoidung)
     public function address() {
-        $userId = $this->currentUser['ID'];
+        $userId = $this->currentUser['ID'] ?? $this->currentUser['id'] ?? null;
         $user = $this->userModel->getUserById($userId);
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $address = $_POST['address'] ?? '';
@@ -77,7 +79,7 @@ class UserController {
     }
     // Đơn hàng của tôi
     public function orders() {
-        $userId = $this->currentUser['ID'];
+        $userId = $this->currentUser['ID'] ?? $this->currentUser['id'] ?? null;
         $orders = $this->orderModel->getByUserId($userId);
         require __DIR__ . '/../views/layouts/taikhoankh.php';
     }

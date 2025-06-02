@@ -16,7 +16,18 @@ class Router {
             if (file_exists($controllerFile)) {
                 require_once $controllerFile;
                 $controllerInstance = new $controller();
-                $controllerInstance->$method();
+
+                $id = $_GET['id'] ?? null;
+                $reflection = new ReflectionMethod($controllerInstance, $method);
+                if ($reflection->getNumberOfParameters() > 0) {
+                    if ($id !== null) {
+                        $controllerInstance->$method($id);
+                    } else {
+                        die("Thiếu tham số id cho action '$method' trong controller '$controller'.");
+                    }
+                } else {
+                    $controllerInstance->$method();
+                }
             } else {
                 throw new Exception("Controller not found: $controller");
             }
@@ -24,6 +35,37 @@ class Router {
             // Handle 404
             header("HTTP/1.0 404 Not Found");
             require_once 'views/errors/404.php';
+        }
+
+        if ($_GET['page'] === 'blog' && $_GET['action'] === 'get') {
+            require_once 'controllers/BlogController.php';
+            $controller = new BlogController($db);
+            $controller->get($_GET['id']);
+            exit;
+        }
+
+        if ($_GET['page'] === 'cart' && $_GET['action'] === 'add') {
+            $controller = new GioHangController();
+            $controller->add();
+            exit;
+        }
+
+        if ($_GET['page'] === 'cart' && $_GET['action'] === 'delete') {
+            $controller = new GioHangController();
+            $controller->delete();
+            exit;
+        }
+
+        // Trong Router.php, thêm case cho thanh toán
+        if ($_GET['page'] === 'thanhtoan') {
+            require_once APP_PATH . '/controllers/ThanhToanController.php';
+            $controller = new ThanhToanController();
+            if (isset($_GET['action'])) {
+                $action = $_GET['action'];
+                $controller->$action();
+            } else {
+                $controller->index();
+            }
         }
     }
 } 

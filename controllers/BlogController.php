@@ -18,7 +18,11 @@ class BlogController {
     public function list() {
         try {
             $blogs = $this->blogModel->getAllBlogs();
-            echo json_encode(['status' => 'success', 'data' => $blogs]);
+            // Lọc bỏ blog draft
+            $blogs = array_filter($blogs, function($blog) {
+                return $blog['status'] === 'published';
+            });
+            echo json_encode(['status' => 'success', 'data' => array_values($blogs)]);
         } catch (Exception $e) {
             http_response_code(500);
             echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);

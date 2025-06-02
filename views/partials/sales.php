@@ -1,4 +1,6 @@
 <?php
+  require_once __DIR__ . '/../../controllers/AdminSalesListController.php';
+
 require_once __DIR__ . '/../../controllers/salesController.php';
 $salesController = new SalesController();
 $sales = $salesController->getAllSales();
@@ -11,7 +13,7 @@ $sales = $salesController->getAllSales();
   <ul class="list-sales">
     <?php foreach ($sales as $sale): ?>
       <li>
-        <a href="<?php echo !empty($sale['DuongDanLienKet']) ? htmlspecialchars($sale['DuongDanLienKet']) : '#'; ?>">
+        <a href="<?php echo BASE_URL; ?>/index.php?page=product&action=detail&id=<?php echo $sale['IDThietBi']; ?>">
           <div class="wrapper-product">
             <div class="label">
               <span>HOT</span>
@@ -36,7 +38,7 @@ $sales = $salesController->getAllSales();
                 <span class="discount-price"><?php echo isset($sale['GiaKhuyenMai']) ? number_format($sale['GiaKhuyenMai'], 0, ',', '.') : ''; ?></span>
               </div>
               <div class="add-product">
-                <a href="<?php echo !empty($sale['DuongDanLienKet']) ? htmlspecialchars($sale['DuongDanLienKet']) : '#'; ?>" class="btn-flip" data-back="Thêm vào giỏ" data-front="Mua ngay"></a>
+                <a href="<?php echo BASE_URL; ?>/index.php?page=product&action=detail&id=<?php echo $sale['IDThietBi']; ?>" class="btn-flip" data-back="Thêm vào giỏ" data-front="Mua ngay"></a>
               </div>
               <div class="product-code">
                 <div class="product-name">

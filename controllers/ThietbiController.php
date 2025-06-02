@@ -6,14 +6,17 @@ if ((isset($_GET['admin']) && $_GET['admin'] == 1) || (php_sapi_name() === 'cli-
         header('Location: /index.php?page=login_signup');
         exit;
     }
-}class ThietBiController {
+}
+
+class ThietBiController {
     private $model;
 
-
+    public function __construct() {
+        $this->model = new ThietBiModel();
+    }
 
     public function getAll() {
-        $stmt = $this->model->getAll();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $this->model->getAll();
     }
 
     public function getOne($id) {
@@ -55,8 +58,12 @@ if ((isset($_GET['admin']) && $_GET['admin'] == 1) || (php_sapi_name() === 'cli-
     }
 
     public function getRecentProducts() {
-        $stmt = $this->model->getRecentProducts();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $this->model->getRecentProducts();
+    }
+
+    public function getSpecs($id) {
+        $data = $this->model->getThongSoByThietBi($id);
+        return ['success' => true, 'data' => $data];
     }
 }
 
@@ -95,6 +102,10 @@ if (isset($_GET['action']) || isset($_POST['action'])) {
             $keyword = $_GET['keyword'] ?? $_POST['keyword'];
             $data = $controller->search($keyword);
             echo json_encode(['success' => true, 'data' => $data]);
+        } elseif ($action === 'getSpecs') {
+            $id = $_GET['id'];
+            $data = $controller->getSpecs($id);
+            echo json_encode($data);
         } else {
             echo json_encode(['success' => false, 'message' => 'Action không hợp lệ']);
         }

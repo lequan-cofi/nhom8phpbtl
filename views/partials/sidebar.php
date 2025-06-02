@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../../controllers/SidebarController.php';
 $sidebarController = new SidebarController();
 $deviceTypes = $sidebarController->getDeviceTypes();
+
 ?>
 <!-- START SIDEBAR -->
 <div id="sidebar">
@@ -14,7 +15,7 @@ $deviceTypes = $sidebarController->getDeviceTypes();
         </li>
         <?php foreach ($deviceTypes as $type): ?>
         <li>
-            <a href="/Danh mục các sản phẩm/<?php echo strtolower($type['Ten']); ?>/<?php echo $type['Ten']; ?>.html">
+            <a href="<?php echo BASE_URL; ?>/index.php?page=categories&category_id=<?php echo $type['ID']; ?>">
                 <i class="<?php echo strtolower($type['Ten']); ?>"></i>
                 <span class="nav-text"><?php echo $type['Ten']; ?></span>
             </a>

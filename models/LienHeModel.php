@@ -31,7 +31,6 @@ class LienHeModel {
 
     // Create new contact
     public function create($data) {
-        file_put_contents('debug_lienhe.txt', print_r($data, true), FILE_APPEND);
         $query = "INSERT INTO {$this->table} (HoTen, Email, ChuDe, NoiDung, TrangThai) 
                  VALUES (:hoten, :email, :chude, :noidung, :trangthai)";
         
@@ -50,36 +49,22 @@ class LienHeModel {
         $stmt->bindParam(':chude', $data['ChuDe']);
         $stmt->bindParam(':noidung', $data['NoiDung']);
         $stmt->bindParam(':trangthai', $data['TrangThai']);
-
-        if($stmt->execute()) {
-            return ['success' => true, 'id' => $this->db->lastInsertId()];
-        }
-        return ['success' => false, 'message' => 'Lỗi khi gửi liên hệ!'];
+        
+        return $stmt->execute();
     }
 
     // Update contact status
     public function updateStatus($id, $status) {
-        $query = "UPDATE {$this->table} SET TrangThai = :trangthai WHERE ID = :id";
+        // Đảm bảo status chỉ có thể là 'Chưa xử lý' hoặc 'Đã xử lý'
+        $validStatuses = ['Chưa xử lý', 'Đã xử lý'];
+        if (!in_array($status, $validStatuses)) {
+            $status = 'Đã xử lý'; // Mặc định là 'Đã xử lý' nếu giá trị không hợp lệ
+        }
+
+        $query = "UPDATE {$this->table} SET TrangThai = :status WHERE ID = :id";
         $stmt = $this->db->prepare($query);
-        $stmt->bindParam(':trangthai', $status);
+        $stmt->bindParam(':status', $status);
         $stmt->bindParam(':id', $id);
         return $stmt->execute();
-    }
-
-    // Get contacts by status
-    public function getByStatus($status) {
-        $query = "SELECT * FROM {$this->table} WHERE TrangThai = ? ORDER BY NgayTao DESC";
-        $stmt = $this->db->prepare($query);
-        $stmt->bindParam(1, $status);
-        $stmt->execute();
-        return $stmt;
-    }
-
-    // Get unprocessed contacts count
-    public function getUnprocessedCount() {
-        $query = "SELECT COUNT(*) as count FROM {$this->table} WHERE TrangThai = 'Chưa xử lý'";
-        $stmt = $this->db->prepare($query);
-        $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC)['count'];
     }
 } 

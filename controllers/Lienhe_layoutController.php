@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../models/LienHeModel.php';
-require_once __DIR__ . '/../controllers/LienHeController.php';
+require_once __DIR__ . '/../controllers/lienhe_controller.php';
 
 class Lienhe_layoutController {
     private $lienHeModel;
@@ -8,7 +8,7 @@ class Lienhe_layoutController {
 
     public function __construct() {
         $this->lienHeModel = new LienHeModel();
-        $this->lienHeController = new LienHeController();
+        $this->lienHeController = new LienHe_Controller();
     }
 
     public function index() {

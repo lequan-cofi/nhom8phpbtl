@@ -7,11 +7,49 @@ $controller = new HinhanhthietbiController();
 $images = $controller->getAll();
 
 $db = db_connect();
-$thietbi = $db->query("SELECT ID, Ten FROM thietbi WHERE NgayXoa IS NULL")->fetchAll(PDO::FETCH_ASSOC);
+$thietbi = $db->query("SELECT t.ID, t.Ten, l.Ten AS TenLoaiThietBi, t.IDLoaiThietBi FROM thietbi t LEFT JOIN loaithietbi l ON t.IDLoaiThietBi = l.ID WHERE t.NgayXoa IS NULL")->fetchAll(PDO::FETCH_ASSOC);
 $thietbiMap = [];
+$loaiThietBi = [];
 foreach ($thietbi as $tb) {
-    $thietbiMap[$tb['ID']] = $tb['Ten'];
+    $thietbiMap[$tb['ID']] = $tb;
+    if ($tb['IDLoaiThietBi'] && $tb['TenLoaiThietBi']) {
+        $loaiThietBi[$tb['IDLoaiThietBi']] = $tb['TenLoaiThietBi'];
+    }
 }
+
+// Lọc
+$filterLoai = isset($_GET['loai']) ? $_GET['loai'] : '';
+$filterAnhChinh = isset($_GET['anhchinh']) ? $_GET['anhchinh'] : '';
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+$sortName = isset($_GET['sort_name']) ? $_GET['sort_name'] : '';
+
+$images = array_filter($images, function($img) use ($filterLoai, $filterAnhChinh, $search, $thietbiMap) {
+    $tb = $thietbiMap[$img['IDThietBi']] ?? null;
+    if (!$tb) return false;
+    if ($filterLoai !== '' && $tb['IDLoaiThietBi'] != $filterLoai) return false;
+    if ($filterAnhChinh !== '' && $img['LaAnhChinh'] != $filterAnhChinh) return false;
+    if ($search !== '' && stripos($tb['Ten'], $search) === false && stripos($tb['TenLoaiThietBi'], $search) === false) return false;
+    return true;
+});
+
+// Sắp xếp tên thiết bị alpha
+if ($sortName === 'az') {
+    usort($images, function($a, $b) use ($thietbiMap) {
+        return strcmp($thietbiMap[$a['IDThietBi']]['Ten'], $thietbiMap[$b['IDThietBi']]['Ten']);
+    });
+} elseif ($sortName === 'za') {
+    usort($images, function($a, $b) use ($thietbiMap) {
+        return strcmp($thietbiMap[$b['IDThietBi']]['Ten'], $thietbiMap[$a['IDThietBi']]['Ten']);
+    });
+}
+
+// Phân trang
+$page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
+$perPage = 10;
+$totalImages = count($images);
+$totalPages = ceil($totalImages / $perPage);
+$images = array_values($images);
+$images = array_slice($images, ($page - 1) * $perPage, $perPage);
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -36,12 +74,34 @@ foreach ($thietbi as $tb) {
                     </button>
                 </div>
                 <div class="card-body">
+                    <!-- Form lọc -->
+                    <form method="GET" class="form-inline mb-3">
+                        <input type="text" name="search" class="form-control mr-2" placeholder="Tìm theo tên hoặc loại thiết bị" value="<?php echo htmlspecialchars($search); ?>">
+                        <select name="loai" class="form-control mr-2">
+                            <option value="">Tất cả loại thiết bị</option>
+                            <?php foreach ($loaiThietBi as $id => $ten): ?>
+                                <option value="<?php echo $id; ?>" <?php if($filterLoai == $id) echo 'selected'; ?>><?php echo htmlspecialchars($ten); ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <select name="anhchinh" class="form-control mr-2">
+                            <option value="">Tất cả ảnh</option>
+                            <option value="1" <?php if($filterAnhChinh==='1') echo 'selected'; ?>>Ảnh chính</option>
+                            <option value="0" <?php if($filterAnhChinh==='0') echo 'selected'; ?>>Ảnh phụ</option>
+                        </select>
+                        <select name="sort_name" class="form-control mr-2">
+                            <option value="">Sắp xếp tên thiết bị</option>
+                            <option value="az" <?php if($sortName==='az') echo 'selected'; ?>>A-Z</option>
+                            <option value="za" <?php if($sortName==='za') echo 'selected'; ?>>Z-A</option>
+                        </select>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-filter"></i> Lọc/Sắp xếp</button>
+                    </form>
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered">
                             <thead class="thead-dark">
                                 <tr>
                                     <th>ID</th>
                                     <th>Thiết bị</th>
+                                    <th>Loại thiết bị</th>
                                     <th>Hình ảnh</th>
                                     <th>Ảnh chính</th>
                                     <th>Ngày tạo</th>
@@ -52,7 +112,8 @@ foreach ($thietbi as $tb) {
                                 <?php foreach ($images as $img): ?>
                                 <tr>
                                     <td><?= $img['ID'] ?></td>
-                                    <td><?= htmlspecialchars($thietbiMap[$img['IDThietBi']] ?? 'Không rõ') ?></td>
+                                    <td><?= htmlspecialchars($thietbiMap[$img['IDThietBi']]['Ten'] ?? 'Không rõ') ?></td>
+                                    <td><?= htmlspecialchars($thietbiMap[$img['IDThietBi']]['TenLoaiThietBi'] ?? 'Không rõ') ?></td>
                                     <td>
                                         <img src="<?= htmlspecialchars($img['DuongDanHinhAnh']) ?>" alt="Ảnh thiết bị" class="img-thumbnail" style="max-width: 100px;">
                                     </td>
@@ -75,6 +136,22 @@ foreach ($thietbi as $tb) {
                             </tbody>
                         </table>
                     </div>
+                    <!-- PHÂN TRANG -->
+                    <?php if ($totalPages > 1): ?>
+                    <nav>
+                        <ul class="pagination justify-content-center">
+                            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                                <li class="page-item <?php if ($i == $page) echo 'active'; ?>">
+                                    <a class="page-link" href="?<?php
+                                        $params = $_GET;
+                                        $params['page'] = $i;
+                                        echo http_build_query($params);
+                                    ?>"><?php echo $i; ?></a>
+                                </li>
+                            <?php endfor; ?>
+                        </ul>
+                    </nav>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

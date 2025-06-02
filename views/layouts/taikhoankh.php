@@ -6,7 +6,11 @@ $action = $_GET['action'] ?? 'profile';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tài khoản khách hàng</title>
+    <title><?php echo htmlspecialchars($data['pageTitle'] ?? 'iStore'); ?></title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/style.css" />
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/font/icon/themify-icons-font/themify-icons/themify-icons.css"/>
+    <script src="https://kit.fontawesome.com/eec2044d74.js" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -99,16 +103,53 @@ $action = $_GET['action'] ?? 'profile';
             border-radius: 6px;
             font-weight: 500;
         }
+        a {
+  text-decoration: none;
+}
     </style>
 </head>
 <body>
+    
+<div id="sidebar">
+        <?php
+            // Nạp nội dung sidebar từ partial
+            $sidebarPath = APP_PATH . '/views/partials/sidebar.php';
+            if (file_exists($sidebarPath)) {
+                require $sidebarPath;
+            } else {
+                echo "<p style='color:red;'>Lỗi: Không tìm thấy file sidebar.php</p>";
+            }
+        ?>
+    </div>
+    <div class="overlay"></div>
+    <div id="header">
+        <?php
+            // Nạp nội dung header từ partial
+            $headerPath = APP_PATH . '/views/partials/header_content.php';
+            if (file_exists($headerPath)) {
+                require $headerPath;
+            } else {
+                echo "<p style='color:red;'>Lỗi: Không tìm thấy file header_content.php</p>";
+            }
+        ?>
+    </div>
+    <div id="nav">
+<?php
+$navigationPath = APP_PATH . '/views/partials/navigation_bar.php';
+if (file_exists($navigationPath)) {
+    require $navigationPath;
+} else {
+    echo "<p style='color:red;'>Lỗi: Không tìm thấy file navigation_bar.php</p>";
+}
+?>
+</div>
 <div class="container py-5">
     <div class="row g-4">
         <!-- Sidebar -->
         <div class="col-md-3">
             <div class="account-info">
                 <div class="account-avatar">
-                    <img src="https://i.imgur.com/8Km9tLL.png" alt="Avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">
+                    <img src="https://iili.io/FHTMlUP.jpg" alt="Avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">
                 </div>
                 <div>
                     <div class="account-name">Lê Xuân Thành Quân</div>
@@ -162,6 +203,27 @@ $action = $_GET['action'] ?? 'profile';
         </div>
     </div>
 </div>
+<div id="main-footer" style="margin-left: 58px;">
+    <?php
+        $footerPath = APP_PATH . '/views/partials/footer_content.php';
+        if (file_exists($footerPath)) {
+            require $footerPath;
+        } else {
+            echo "<p style='color:red;'>Lỗi: Không tìm thấy file footer_content.php</p>";
+        }
+        ?>
+    </div>
+    <div id="cro-buttons">
+        <?php
+            // Nạp nội dung header từ partial
+            $headerPath = APP_PATH . '/views/partials/cro-buttons.php';
+            if (file_exists($headerPath)) {
+                require $headerPath;
+            } else {
+                echo "<p style='color:red;'>Lỗi: Không tìm thấy file cro-buttons.php</p>";
+            }
+        ?>
+    </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

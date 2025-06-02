@@ -20,7 +20,7 @@ class HomeController {
         // Lấy sản phẩm mới nhất
         require_once APP_PATH . '/models/ThietbiModel.php';
         $thietbiModel = new ThietBiModel();
-        $recentProducts = $thietbiModel->getRecentProducts()->fetchAll(PDO::FETCH_ASSOC);
+        $recentProducts = $thietbiModel->getRecentProducts();
 
         // Gọi view layout chính, layout sẽ nạp các phần khác
         $contentView = APP_PATH . '/views/home/index.php'; // Trang con sẽ được nạp vào layout

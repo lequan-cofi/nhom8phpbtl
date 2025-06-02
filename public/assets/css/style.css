@@ -2668,4 +2668,42 @@ a.logo img {
   }
 } 
 
+.search-suggest-popup {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+  z-index: 1000;
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 10px;
+}
+.suggest-names li {
+  padding: 6px 10px;
+  cursor: pointer;
+}
+.suggest-names li:hover {
+  background: #f3f4f6;
+}
+.suggest-products {
+  margin-top: 10px;
+}
+.suggest-product-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  border-bottom: 1px solid #eee;
+}
+.suggest-product-item:last-child {
+  border-bottom: none;
+}
+.suggest-product-item img {
+  border-radius: 5px;
+}
+
 

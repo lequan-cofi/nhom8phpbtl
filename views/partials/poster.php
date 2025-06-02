@@ -40,14 +40,14 @@ if ($poster) {
     <div class="list-item">
         <?php foreach ($promotionalProducts as $product): ?>
         <div class="item">
-            <a href="/sanpham/<?php echo htmlspecialchars($product['IDThietBi'] ?? ''); ?>">
+            <a href="<?php echo BASE_URL; ?>/index.php?page=product&action=detail&id=<?php echo $product['IDThietBi']; ?>">
                 <?php
                 $imgSrc = !empty($product['HinhAnh']) ? htmlspecialchars($product['HinhAnh']) : '/assets/no-image.png';
                 ?>
                 <img src="<?php echo $imgSrc; ?>" alt="" style="background:#f3f3f3;object-fit:cover;max-width:100px;max-height:100px;">
             </a>
             <div class="text-content">
-                <a href="/sanpham/<?php echo htmlspecialchars($product['IDThietBi'] ?? ''); ?>">
+                <a href="<?php echo BASE_URL; ?>/index.php?page=product&action=detail&id=<?php echo $product['IDThietBi']; ?>">
                     <div class="text-heading">
                         <?php echo htmlspecialchars($product['TenThietBi'] ?? ''); ?>
                     </div>

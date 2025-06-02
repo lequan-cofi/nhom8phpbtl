@@ -1,6 +1,10 @@
 <?php
 // views/layouts/main_layout.php
 // BASE_URL đã được define trong public/index.php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 require_once APP_PATH . '/controllers/ContentController.php';
 ?>
 <!DOCTYPE html>
@@ -134,7 +138,7 @@ if (file_exists($sidebarPath)) {
             echo "<p style='color:red;'>Lỗi: Không tìm thấy file footer_content.php</p>";
         }
         ?>
-    </div>
+</div>
     <div id="cro-buttons">
         <?php
             // Nạp nội dung header từ partial

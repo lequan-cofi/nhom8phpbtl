@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - iStore</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -23,15 +24,19 @@
         <div class="collapse navbar-collapse" id="adminNavbar">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link" href="/iStore_PHP_Backend/views/admin/dashboard.php">Trang chủ</a></li>
-                <li class="nav-item"><a class="nav-link" href="admin_lienhe.php">Liên hệ</a></li>
+                <li class="nav-item"><a class="nav-link" href="addmin_phantich.php">Phân tích</a></li>
+                <li class="nav-item"><a class="nav-link" href="admin_phanhoi.php">Phản hồi</a></li>
+                <li class="nav-item"><a class="nav-link" href="admin_donhang.php">Đơn hàng</a></li>
                 <li class="nav-item"><a class="nav-link" href="admin_blog.php">Blog</a></li>
                 <li class="nav-item"><a class="nav-link" href="admin_cuahang.php">Cửa hàng</a></li>
                 <li class="nav-item"><a class="nav-link" href="admin_thietbi.php">Thiết bị</a></li>
                 <li class="nav-item"><a class="nav-link" href="admin_LoaiThietBi.php">Loại Thiết bị</a></li>
                 <li class="nav-item"><a class="nav-link" href="admin_hinhanhthietbi.php">Hình ảnh Thiết bị</a></li>
+                <li class="nav-item"><a class="nav-link" href="admin_khuyenmai.php">Khuyến mãi</a></li>
                 <li class="nav-item"><a class="nav-link" href="admin_sales.php">Sản phẩm KM</a></li>
                 <li class="nav-item"><a class="nav-link" href="admin_saleslist.php">DS Ưu đãi</a></li>
                 <li class="nav-item"><a class="nav-link" href="admin_poster.php">Poster</a></li>
+                <li class="nav-item"><a class="nav-link" href="admin_nguoidung.php">Người dùng</a></li>
                 <li class="nav-item"><a class="nav-link" href="../../public/index.php">Về trang người dùng</a></li>
                 <li class="nav-item"><a class="nav-link text-danger" href="../../public/index.php?page=user&action=logout"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
             </ul>

@@ -102,7 +102,7 @@ if (file_exists($navigationPath)) {
                         $firstImage = !empty($images) ? $images[0]['DuongDanHinhAnh'] : '';
                         ?>
                         <li>
-                            <a href="<?php echo !empty($device['DuongDanLienKet']) ? htmlspecialchars($device['DuongDanLienKet']) : '#'; ?>">
+                            <a href="<?php echo BASE_URL; ?>/index.php?page=product&action=detail&id=<?php echo $device['ID']; ?>">
                                 <div class="wrapper-product">
                                     <div class="label">
                                         <span>HOT</span>
@@ -127,7 +127,7 @@ if (file_exists($navigationPath)) {
                                             <span class="discount-price"><?php echo isset($device['GiaKhuyenMai']) ? number_format($device['GiaKhuyenMai'], 0, ',', '.') : ''; ?></span>
                                         </div>
                                         <div class="add-product">
-                                            <a href="<?php echo !empty($device['DuongDanLienKet']) ? htmlspecialchars($device['DuongDanLienKet']) : '#'; ?>" class="btn-flip" data-back="Thêm vào giỏ" data-front="Mua ngay"></a>
+                                            <a href="<?php echo BASE_URL; ?>/product/<?php echo $device['ID']; ?>" class="btn-flip" data-back="Thêm vào giỏ" data-front="Mua ngay"></a>
                                         </div>
                                         <div class="product-code">
                                             <div class="product-name">SKU:</div>
@@ -139,7 +139,7 @@ if (file_exists($navigationPath)) {
                                             <a href="#"><i class="fa-solid fa-code-compare" style="color: #333;"></i></a>
                                         </div>
                                         <div class="search-button">
-                                            <a><i class="fa-solid fa-magnifying-glass" style="color: #333;"></i></a>
+                                            <a href="<?php echo BASE_URL; ?>/product/<?php echo $device['ID']; ?>"><i class="fa-solid fa-magnifying-glass" style="color: #333;"></i></a>
                                         </div>
                                         <div class="love-button">
                                             <a><i class="fa-regular fa-heart" style="color: #333;"></i></a>

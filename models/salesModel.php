@@ -10,8 +10,11 @@ class SalesModel {
     }
 
     public function getAllSales() {
-        $sql = "SELECT s.ID, t.Ten as TenThietBi, k.TenKhuyenMai, t.Gia, 
-                (t.Gia * (1 - k.MucGiamGia/100)) as GiaKhuyenMai, s.NgayTao
+        $sql = "SELECT s.ID, t.ID as IDThietBi, t.Ten as TenThietBi, k.TenKhuyenMai, t.Gia, 
+                (t.Gia * (1 - k.MucGiamGia/100)) as GiaKhuyenMai, s.NgayTao,
+                (SELECT DuongDanHinhAnh FROM hinhanhthietbi 
+                 WHERE IDThietBi = t.ID AND LaAnhChinh = 1 AND NgayXoa IS NULL 
+                 LIMIT 1) as HinhAnh
                 FROM SanPham_KhuyenMai s
                 JOIN thietbi t ON s.IDThietBi = t.ID
                 JOIN khuyenmai k ON s.IDKhuyenMai = k.ID

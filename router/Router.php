@@ -73,6 +73,12 @@ class Router {
             error_log("Router: Controller file not found at {$controllerFile}");
             $this->notFound("Controller file '{$controllerName}.php' không tìm thấy.");
         }
+
+        if ($_GET['page'] === 'cart' && $_GET['action'] === 'updateQuantity') {
+            $controller = new GioHangController();
+            $controller->updateQuantity();
+            exit;
+        }
     }
 
     protected function notFound($message = "Trang bạn yêu cầu không tồn tại.") {
@@ -85,5 +91,7 @@ class Router {
         error_log("404 Not Found: " . $message . " - Requested URL: " . ($_SERVER['REQUEST_URI'] ?? 'N/A'));
         exit;
     }
+    
+
 }
 ?>

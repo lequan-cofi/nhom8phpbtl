@@ -18,6 +18,28 @@ $db = db_connect();
 $thietbi = $db->query("SELECT ID, Ten FROM thietbi WHERE NgayXoa IS NULL")->fetchAll(PDO::FETCH_ASSOC);
 // Lấy danh sách khuyến mãi
 $khuyenmai = $db->query("SELECT ID, TenKhuyenMai FROM khuyenmai WHERE NgayXoa IS NULL")->fetchAll(PDO::FETCH_ASSOC);
+
+// Tìm kiếm theo tên sản phẩm
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+if ($search !== '') {
+    $sales = array_filter($sales, function($sale) use ($search) {
+        return stripos($sale['TenThietBi'], $search) !== false;
+    });
+}
+// Lọc theo tên khuyến mãi (dùng select)
+$filterKM = isset($_GET['khuyenmai']) ? $_GET['khuyenmai'] : '';
+if ($filterKM !== '') {
+    $sales = array_filter($sales, function($sale) use ($filterKM) {
+        return $sale['TenKhuyenMai'] === $filterKM;
+    });
+}
+// Phân trang
+$page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
+$perPage = 10;
+$totalSales = count($sales);
+$totalPages = ceil($totalSales / $perPage);
+$sales = array_values($sales);
+$sales = array_slice($sales, ($page - 1) * $perPage, $perPage);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -43,6 +65,17 @@ $khuyenmai = $db->query("SELECT ID, TenKhuyenMai FROM khuyenmai WHERE NgayXoa IS
                     </button>
                 </div>
                 <div class="card-body">
+                    <!-- Form lọc -->
+                    <form method="GET" class="form-inline mb-3">
+                        <input type="text" name="search" class="form-control mr-2" placeholder="Tìm theo tên sản phẩm" value="<?php echo htmlspecialchars($search); ?>">
+                        <select name="khuyenmai" class="form-control mr-2">
+                            <option value="">Tất cả khuyến mãi</option>
+                            <?php foreach ($khuyenmai as $km): ?>
+                                <option value="<?php echo htmlspecialchars($km['TenKhuyenMai']); ?>" <?php if($filterKM === $km['TenKhuyenMai']) echo 'selected'; ?>><?php echo htmlspecialchars($km['TenKhuyenMai']); ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-filter"></i> Lọc</button>
+                    </form>
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered">
                             <thead class="thead-dark">
@@ -82,6 +115,22 @@ $khuyenmai = $db->query("SELECT ID, TenKhuyenMai FROM khuyenmai WHERE NgayXoa IS
                             </tbody>
                         </table>
                     </div>
+                    <!-- PHÂN TRANG -->
+                    <?php if ($totalPages > 1): ?>
+                    <nav>
+                        <ul class="pagination justify-content-center">
+                            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                                <li class="page-item <?php if ($i == $page) echo 'active'; ?>">
+                                    <a class="page-link" href="?<?php
+                                        $params = $_GET;
+                                        $params['page'] = $i;
+                                        echo http_build_query($params);
+                                    ?>"><?php echo $i; ?></a>
+                                </li>
+                            <?php endfor; ?>
+                        </ul>
+                    </nav>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

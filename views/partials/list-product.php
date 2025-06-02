@@ -12,7 +12,7 @@ $deviceTypes = $loaithietbiController->getAllWithProductCount();
     <ul class="product">
       <?php foreach ($deviceTypes as $type): ?>
       <li>
-        <a href="<?php echo !empty($type['DuongDanLienKet']) ? htmlspecialchars($type['DuongDanLienKet']) : 'Danh mục các sản phẩm/' . strtolower($type['Ten']) . '/' . $type['Ten'] . '.html'; ?>">
+        <a href="<?php echo BASE_URL; ?>/index.php?page=categories&category_id=<?php echo $type['ID']; ?>">
           <div class="img-wrapper">
             <?php if (!empty($type['DuongDanHinhAnh'])): ?>
               <img src="<?php echo htmlspecialchars($type['DuongDanHinhAnh']); ?>" alt="<?php echo htmlspecialchars($type['Ten']); ?>" width="180.56px" height="180.56px">

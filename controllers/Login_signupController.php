@@ -39,9 +39,12 @@ class Login_signupController {
             $result = $this->authModel->login($email, $password);
             
             if ($result['success']) {
-                // Set session variables (lưu toàn bộ user)
                 $_SESSION['user'] = $result['user'];
-                // Phân quyền điều hướng
+                // Đảm bảo luôn có trường 'id' (dù model trả về 'ID' hay 'id')
+                if (isset($_SESSION['user']['ID'])) {
+                    $_SESSION['user']['id'] = $_SESSION['user']['ID'];
+                    unset($_SESSION['user']['ID']);
+                }
                 header('Location: ' . BASE_URL . '/index.php');
                 exit();
             } else {
