@@ -10,15 +10,27 @@ if (!isset($thongSoNhom)) {
     $thongSoNhom = [];
 }
 
-// Lấy thông số kỹ thuật đã được phân nhóm
-// $thongSoNhom = $thietBiData['thongSoNhom'];
+// Kiểm tra khuyến mãi
+$khuyenMaiModel = new KhuyenMaiModel();
+$salesModel = new SalesModel();
 
-// Lấy thông số kỹ thuật của thiết bị
-// $thongSo = $thongSoModel->getThongSoByThietBi($id);
-// $thongSoData = $thongSo->fetchAll(PDO::FETCH_ASSOC);
+// Lấy thông tin khuyến mãi của sản phẩm
+$promotionInfo = $salesModel->getSaleById($thietBiData['ID']);
+$discountedPrice = $thietBiData['Gia'];
+$hasPromotion = false;
 
-// Phân loại thông số kỹ thuật theo nhóm
-// foreach ($thongSoData as $ts) { ... }
+// Debug information
+error_log("Product ID: " . $thietBiData['ID']);
+error_log("Promotion Info: " . print_r($promotionInfo, true));
+
+if ($promotionInfo && isset($promotionInfo['MucGiamGia']) && $promotionInfo['MucGiamGia'] > 0) {
+    $hasPromotion = true;
+    $discountedPrice = $promotionInfo['GiaKhuyenMai'];
+    error_log("Has promotion: true");
+    error_log("Discounted price: " . $discountedPrice);
+} else {
+    error_log("No promotion found or invalid discount");
+}
 
 $hinhAnh = $hinhAnhList ?? [];
 if (empty($hinhAnh)) {
@@ -480,7 +492,23 @@ if (file_exists($navigationPath)) {
     <div class="container">
         <div class="product-header">
             <h1 class="product-title"><?php echo htmlspecialchars($thietBiData['Ten']); ?></h1>
-            <p class="price-info"><?php echo number_format($thietBiData['Gia'], 0, ',', '.'); ?> VNĐ</p>
+            <div class="price-info">
+                <?php if ($hasPromotion && $discountedPrice < $thietBiData['Gia']): ?>
+                    <span class="original-price" style="text-decoration: line-through; color: #86868b; margin-right: 10px;">
+                        <?php echo number_format($thietBiData['Gia'], 0, ',', '.'); ?> VNĐ
+                    </span>
+                    <span class="discounted-price" style="color: #d71a19; font-weight: bold;">
+                        <?php echo number_format($discountedPrice, 0, ',', '.'); ?> VNĐ
+                    </span>
+                    <div class="promotion-badge" style="display: inline-block; background: #d71a19; color: white; padding: 4px 8px; border-radius: 4px; margin-left: 10px; font-size: 14px;">
+                        <?php echo htmlspecialchars($promotionInfo['TenKhuyenMai']); ?> - Giảm <?php echo $promotionInfo['MucGiamGia']; ?>%
+                    </div>
+                <?php else: ?>
+                    <span class="price" style="color: #0056b3; font-weight: bold;">
+                        <?php echo number_format($thietBiData['Gia'], 0, ',', '.'); ?> VNĐ
+                    </span>
+                <?php endif; ?>
+            </div>
             <form method="post" action="<?php echo BASE_URL; ?>/index.php?page=cart&action=add">
                 <input type="hidden" name="product_id" value="<?php echo $thietBiData['ID']; ?>">
                 <input type="hidden" name="quantity" value="1">

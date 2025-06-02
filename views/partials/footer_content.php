@@ -103,8 +103,8 @@
           <div class="text-header">Tải app: </div>
           <div class="text-descriptop">Giảm 10% cho đơn hàng đầu tiên</div>
           <div class="shop">
-            <a href=""><img src="./assets/img/chplay.png" alt=""></a>
-            <a class="img-2" href=""><img src="./assets/img/appstore.png" alt=""></a>
+            <a href=""><img src="https://iili.io/FHOMdG9.png" alt=""></a>
+            <a class="img-2" href=""><img src="https://iili.io/FHOXknp.png" alt=""></a>
           </div>
         </div>
       </div>

@@ -12,26 +12,44 @@ class SalesModel {
     public function getAllSales() {
         $sql = "SELECT s.ID, t.ID as IDThietBi, t.Ten as TenThietBi, k.TenKhuyenMai, t.Gia, 
                 (t.Gia * (1 - k.MucGiamGia/100)) as GiaKhuyenMai, s.NgayTao,
+                k.NgayBatDau, k.NgayKetThuc, k.MucGiamGia,
                 (SELECT DuongDanHinhAnh FROM hinhanhthietbi 
                  WHERE IDThietBi = t.ID AND LaAnhChinh = 1 AND NgayXoa IS NULL 
                  LIMIT 1) as HinhAnh
                 FROM SanPham_KhuyenMai s
                 JOIN thietbi t ON s.IDThietBi = t.ID
                 JOIN khuyenmai k ON s.IDKhuyenMai = k.ID
+                WHERE (k.NgayBatDau IS NULL OR k.NgayBatDau <= NOW())
+                  AND (k.NgayKetThuc IS NULL OR k.NgayKetThuc >= NOW())
+                  AND k.MucGiamGia > 0
+                  AND k.NgayXoa IS NULL
                 ORDER BY s.NgayTao DESC";
         return $this->db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getSaleById($id) {
-        $sql = "SELECT s.*, t.Ten as TenThietBi, k.TenKhuyenMai, t.Gia, 
+        $sql = "SELECT s.*, t.Ten as TenThietBi, k.TenKhuyenMai, k.MucGiamGia, t.Gia, 
                 (t.Gia * (1 - k.MucGiamGia/100)) as GiaKhuyenMai
                 FROM {$this->table} s
                 JOIN thietbi t ON s.IDThietBi = t.ID
                 JOIN khuyenmai k ON s.IDKhuyenMai = k.ID
-                WHERE s.ID = :id";
+                WHERE s.IDThietBi = :id 
+                AND k.NgayXoa IS NULL 
+                AND (k.NgayBatDau IS NULL OR k.NgayBatDau <= CURRENT_TIMESTAMP)
+                AND (k.NgayKetThuc IS NULL OR k.NgayKetThuc >= CURRENT_TIMESTAMP)
+                AND k.MucGiamGia > 0
+                ORDER BY k.MucGiamGia DESC
+                LIMIT 1";
         $stmt = $this->db->prepare($sql);
         $stmt->execute(['id' => $id]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        // Debug information
+        error_log("SQL Query: " . $sql);
+        error_log("Product ID: " . $id);
+        error_log("Query Result: " . print_r($result, true));
+        
+        return $result;
     }
 
     public function createSale($data) {

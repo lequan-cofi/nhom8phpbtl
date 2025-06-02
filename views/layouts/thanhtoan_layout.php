@@ -543,6 +543,8 @@
     <?php
     $user = $_SESSION['user'] ?? [];
     $cartItems = $cartItems ?? []; // Controller phải truyền biến này sang
+    require_once __DIR__ . '/../../models/salesModel.php';
+    $salesModel = new SalesModel();
     ?>
     <div class="container">
         <div class="main-content glass-card">
@@ -643,7 +645,13 @@
                 
                 <?php $total = 0; ?>
                 <?php foreach ($cartItems as $item): ?>
-                    <?php $itemTotal = $item['Gia'] * $item['SoLuong']; $total += $itemTotal; ?>
+                    <?php 
+                        $promotionInfo = $salesModel->getSaleById($item['IDThietBi']);
+                        $isSale = $promotionInfo && isset($promotionInfo['GiaKhuyenMai']) && $promotionInfo['GiaKhuyenMai'] < $item['Gia'];
+                        $displayPrice = $isSale ? $promotionInfo['GiaKhuyenMai'] : $item['Gia'];
+                        $itemTotal = $displayPrice * $item['SoLuong'];
+                        $total += $itemTotal;
+                    ?>
                     <div class="product-item">
                     <?php
                             $hinhAnhModel = new HinhanhthietbiModel();
@@ -655,7 +663,21 @@
                         </div>
                         <div class="product-info">
                             <div class="product-name"><?php echo htmlspecialchars($item['TenThietBi'] ?? ''); ?> (<?php echo $item['SoLuong']; ?>)</div>
-                            <div class="product-price"><?php echo number_format($itemTotal, 0, ',', '.'); ?>₫</div>
+                            <div class="product-price">
+                                <?php if ($isSale): ?>
+                                    <span style="text-decoration: line-through; color: #86868b; margin-right: 8px;">
+                                        <?php echo number_format($item['Gia'], 0, ',', '.'); ?>₫
+                                    </span>
+                                    <span style="color: #d71a19; font-weight: bold;">
+                                        <?php echo number_format($promotionInfo['GiaKhuyenMai'], 0, ',', '.'); ?>₫
+                                    </span>
+                                    <span style="color: #d71a19; font-size: 13px;">
+                                        <?php echo htmlspecialchars($promotionInfo['TenKhuyenMai']); ?> - Giảm <?php echo $promotionInfo['MucGiamGia']; ?>%
+                                    </span>
+                                <?php else: ?>
+                                    <?php echo number_format($item['Gia'], 0, ',', '.'); ?>₫
+                                <?php endif; ?>
+                            </div>
                         </div>
                     </div>
                 <?php endforeach; ?>

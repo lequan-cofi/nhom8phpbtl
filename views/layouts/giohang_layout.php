@@ -1,3 +1,7 @@
+<?php
+require_once __DIR__ . '/../../models/salesModel.php';
+$salesModel = new SalesModel();
+?>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -444,7 +448,10 @@ if (file_exists($navigationPath)) {
             <?php 
                 $subtotal = 0;
                 foreach ($cartItems as $item): 
-                    $itemTotal = $item['Gia'] * $item['SoLuong'];
+                    $promotionInfo = $salesModel->getSaleById($item['IDThietBi']);
+                    $isSale = $promotionInfo && isset($promotionInfo['GiaKhuyenMai']) && $promotionInfo['GiaKhuyenMai'] < $item['Gia'];
+                    $displayPrice = $isSale ? $promotionInfo['GiaKhuyenMai'] : $item['Gia'];
+                    $itemTotal = $displayPrice * $item['SoLuong'];
                     $subtotal += $itemTotal;
             ?>
             <div class="cart-item">
@@ -468,8 +475,22 @@ if (file_exists($navigationPath)) {
                             <a href="#" class="action-link remove-item" data-id="<?php echo $item['ID']; ?>">Remove</a>
                         </div>
                     </div>
-                    <div class="item-price" data-price="<?php echo $item['Gia']; ?>">
-                        <div class="price-current"><?php echo number_format($item['Gia'], 0, ',', '.'); ?>₫</div>
+                    <div class="item-price" data-price="<?php echo $displayPrice; ?>">
+                        <?php if ($isSale): ?>
+                            <div class="price-current">
+                                <span style="text-decoration: line-through; color: #86868b; margin-right: 8px;">
+                                    <?php echo number_format($item['Gia'], 0, ',', '.'); ?>₫
+                                </span>
+                                <span style="color: #d71a19; font-weight: bold;">
+                                    <?php echo number_format($promotionInfo['GiaKhuyenMai'], 0, ',', '.'); ?>₫
+                                </span>
+                            </div>
+                            <div style="color: #d71a19; font-size: 13px;">
+                                <?php echo htmlspecialchars($promotionInfo['TenKhuyenMai']); ?> - Giảm <?php echo $promotionInfo['MucGiamGia']; ?>%
+                            </div>
+                        <?php else: ?>
+                            <div class="price-current"><?php echo number_format($item['Gia'], 0, ',', '.'); ?>₫</div>
+                        <?php endif; ?>
                         <div class="price-installment" id="item-total-<?php echo $item['ID']; ?>">
                             Tổng: <?php echo number_format($itemTotal, 0, ',', '.'); ?>₫
                         </div>

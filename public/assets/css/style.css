@@ -859,6 +859,7 @@ a:focus {
   margin-bottom: 15px;
   color: #1c61e7;
   font-weight: 600;
+  text-decoration: line-through;
 }
 #sales .product-price .discount-price{
   color: #000;

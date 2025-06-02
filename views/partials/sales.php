@@ -34,7 +34,7 @@ $sales = $salesController->getAllSales();
                 Còn hàng
               </p>
               <div class="product-price">
-                <span class="original-price"><?php echo isset($sale['Gia']) ? number_format($sale['Gia'], 0, ',', '.') : ''; ?></span>
+                <span class="original-price" style="text-decoration: line-through;"><?php echo isset($sale['Gia']) ? number_format($sale['Gia'], 0, ',', '.') : ''; ?></span>
                 <span class="discount-price"><?php echo isset($sale['GiaKhuyenMai']) ? number_format($sale['GiaKhuyenMai'], 0, ',', '.') : ''; ?></span>
               </div>
               <div class="add-product">

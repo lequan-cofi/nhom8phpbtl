@@ -32,6 +32,40 @@ $hinhanhController = new HinhanhthietbiController();
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/font/icon/themify-icons-font/themify-icons/themify-icons.css"/>
     <script src="https://kit.fontawesome.com/eec2044d74.js" crossorigin="anonymous"></script>
 </head>
+<style>
+    .list-sales {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 24px 16px;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
+    .list-sales > li {
+        margin: 0;
+        padding: 0;
+    }
+    @media (max-width: 1200px) {
+        .list-sales {
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+    @media (max-width: 992px) {
+        .list-sales {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+    @media (max-width: 768px) {
+        .list-sales {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    @media (max-width: 576px) {
+        .list-sales {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
 <body>
     <div id="sidebar">
         <?php
