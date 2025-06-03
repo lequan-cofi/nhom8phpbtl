@@ -83,11 +83,11 @@ if (file_exists($navigationPath)) {
         <div class="about-header-text">
             <div class="about-header-title">Chào mừng đến với iStore,</div>
             <div class="about-header-desc">
-                Tại iStore, chúng tôi tự hào mang đến cho bạn những sản phẩm công nghệ tiên tiến nhất. Hãy cùng khám phá các dòng điện thoại di động, phụ kiện, laptop chất lượng và dịch vụ hỗ trợ khách hàng tốt nhất. iStore cam kết đem lại cho bạn trải nghiệm mua sắm dễ dàng, tiện lợi và an tâm tối đa!
+                Tại iStore, chúng tôi chuyên cung cấp các thiết bị Apple chính hãng với chất lượng hàng đầu. Từ iPhone, iPad, MacBook đến các phụ kiện Apple chính hãng, iStore cam kết mang đến cho bạn trải nghiệm mua sắm đáng tin cậy, thuận tiện và an tâm tuyệt đối. Hãy khám phá thế giới công nghệ đẳng cấp cùng dịch vụ hỗ trợ khách hàng tận tâm tại iStore!
             </div>
         </div>
         <div class="about-header-img">
-            <img src="https://store.storeimages.cdn-apple.com/1/as-images.apple.com/is/store-card-13-iphone-nav-202502_GEO_US?wid=400&hei=260&fmt=png-alpha&.v=dW5XbHI1eDVpd01qWUU4bFRtWGZXMGIwbkQ3THNNRjRsZmFuY3ZnUksrQTA2bGFaODVwaytiT1psSXc2dlhUWUwyZnhVM3hmakh4cEVIbk1pcnBIRXFpaVlBSTdOOXplUDUwZUNmQnR2OUxuakp5ZFBaaHhUOUJXVGFwbk9vT2k" alt="iStore Banner">
+            <img src="https://store.storeimages.cdn-apple.com/1/as-images.apple.com/is/store-card-40-refurb-202408?wid=800&hei=1000&fmt=p-jpg&qlt=95&.v=MTZ5STlsTFBndFBGTjdlaHEreGY1YTFsUjh2RWUzeU9adTZtZmNMZDNMVnd5b1hKY2V3T2V4alVLZTRFVTdOK0tRNjVHZTlIV04vVjZjbEh0Rm5SYzM3NnQydDdpK3FzN25MQVFxVVVwNmc" alt="iStore Banner">
         </div>
     </div>
 
@@ -95,24 +95,24 @@ if (file_exists($navigationPath)) {
     <div class="about-section-title">Sản phẩm nổi bật</div>
     <div class="featured-products">
         <div class="product-card">
-            <img src="https://store.storeimages.cdn-apple.com/1/as-images.apple.com/is/store-card-13-iphone-nav-202502_GEO_US?wid=400&hei=260&fmt=png-alpha&.v=dW5XbHI1eDVpd01qWUU4bFRtWGZXMGIwbkQ3THNNRjRsZmFuY3ZnUksrQTA2bGFaODVwaytiT1psSXc2dlhUWUwyZnhVM3hmakh4cEVIbk1pcnBIRXFpaVlBSTdOOXplUDUwZUNmQnR2OUxuakp5ZFBaaHhUOUJXVGFwbk9vT2k" alt="Oppo">
-            <div class="product-title">Oppo</div>
+            <img src="https://store.storeimages.cdn-apple.com/1/as-images.apple.com/is/store-card-13-ipad-nav-202405?wid=400&hei=260&fmt=png-alpha&.v=dW5XbHI1eDVpd01qWUU4bFRtWGZXNGFLQTJVNnlNQmQrVmRBYnZYei9jckUzelNmMnRxajE0NHhmMWtLazl6eG53M0FRZHBXNTh1U1lFVEtSR2YzTm5qbE56RWRpRFNIRXZvbkd2S0l5dTg" alt="Oppo">
+            <div class="product-title">iPad</div>
             <div class="product-desc">
-                OPPO là một nhà sản xuất điện thoại thông minh hàng đầu đến từ Trung Quốc, nổi bật với các dòng sản phẩm trẻ trung, thiết kế hiện đại, camera và công nghệ sạc nhanh.
+               iPad – máy tính bảng đa năng, lý tưởng cho cả công việc lẫn giải trí với màn hình sắc nét và khả năng xử lý linh hoạt.
             </div>
         </div>
         <div class="product-card">
             <img src="https://store.storeimages.cdn-apple.com/1/as-images.apple.com/is/store-card-13-iphone-nav-202502_GEO_US?wid=400&hei=260&fmt=png-alpha&.v=dW5XbHI1eDVpd01qWUU4bFRtWGZXMGIwbkQ3THNNRjRsZmFuY3ZnUksrQTA2bGFaODVwaytiT1psSXc2dlhUWUwyZnhVM3hmakh4cEVIbk1pcnBIRXFpaVlBSTdOOXplUDUwZUNmQnR2OUxuakp5ZFBaaHhUOUJXVGFwbk9vT2k" alt="Apple">
-            <div class="product-title">Apple</div>
+            <div class="product-title">iPhone</div>
             <div class="product-desc">
-                Apple là thương hiệu công nghệ hàng đầu thế giới với các sản phẩm iPhone, iPad, Macbook nổi bật về thiết kế, chất lượng và trải nghiệm người dùng.
+               iPhone – chiếc điện thoại thông minh biểu tượng với thiết kế tinh tế, hiệu năng mạnh mẽ và khả năng chụp ảnh vượt trội.
             </div>
         </div>
         <div class="product-card">
-                <img src="https://store.storeimages.cdn-apple.com/1/as-images.apple.com/is/store-card-13-iphone-nav-202502_GEO_US?wid=400&hei=260&fmt=png-alpha&.v=dW5XbHI1eDVpd01qWUU4bFRtWGZXMGIwbkQ3THNNRjRsZmFuY3ZnUksrQTA2bGFaODVwaytiT1psSXc2dlhUWUwyZnhVM3hmakh4cEVIbk1pcnBIRXFpaVlBSTdOOXplUDUwZUNmQnR2OUxuakp5ZFBaaHhUOUJXVGFwbk9vT2k" alt="Samsung">
-            <div class="product-title">Samsung</div>
+                <img src="https://store.storeimages.cdn-apple.com/1/as-images.apple.com/is/store-card-13-mac-nav-202503?wid=400&hei=260&fmt=png-alpha&.v=M1Q3OGxnb1lBaHhqNjZ2OVRXZmx4VEpBUDFBeEhMZS9GUnNSYXdEd0hscisrUlZaSVRoWVYzU0Qra0FoTmUwNng2bitObzZwQzk4cEorV1dZdzhIazVVcFlOTkdoMWg4ZkdDS1ovMUlzcW8" alt="Samsung">
+            <div class="product-title">Macbook</div>
             <div class="product-desc">
-                Samsung nổi tiếng với các dòng Galaxy đa dạng, phù hợp với nhiều phân khúc khách hàng, nổi bật về công nghệ màn hình và camera.
+               MacBook – dòng laptop cao cấp với hiệu suất ổn định, thiết kế sang trọng và hệ điều hành macOS mượt mà, tối ưu cho người dùng sáng tạo và chuyên nghiệp.
             </div>
         </div>
     </div>
@@ -121,15 +121,12 @@ if (file_exists($navigationPath)) {
     <div class="about-section-title" style="margin-top:60px;">Cam kết</div>
     <div class="commitments">
         <div class="commitment-item">
-            <img src="https://store.storeimages.cdn-apple.com/1/as-images.apple.com/is/store-card-13-iphone-nav-202502_GEO_US?wid=400&hei=260&fmt=png-alpha&.v=dW5XbHI1eDVpd01qWUU4bFRtWGZXMGIwbkQ3THNNRjRsZmFuY3ZnUksrQTA2bGFaODVwaytiT1psSXc2dlhUWUwyZnhVM3hmakh4cEVIbk1pcnBIRXFpaVlBSTdOOXplUDUwZUNmQnR2OUxuakp5ZFBaaHhUOUJXVGFwbk9vT2k" alt="Hoàn tiền">
+            <img src="https://image.pngaaa.com/478/5481478-middle.png" alt="Hoàn tiền">
             <div class="commitment-title">Hoàn tiền 100% nếu bạn không hài lòng</div>
         </div>
+      
         <div class="commitment-item">
-            <img src="https://store.storeimages.cdn-apple.com/1/as-images.apple.com/is/store-card-13-iphone-nav-202502_GEO_US?wid=400&hei=260&fmt=png-alpha&.v=dW5XbHI1eDVpd01qWUU4bFRtWGZXMGIwbkQ3THNNRjRsZmFuY3ZnUksrQTA2bGFaODVwaytiT1psSXc2dlhUWUwyZnhVM3hmakh4cEVIbk1pcnBIRXFpaVlBSTdOOXplUDUwZUNmQnR2OUxuakp5ZFBaaHhUOUJXVGFwbk9vT2k" alt="Trả góp">
-            <div class="commitment-title">Trả góp 0% lãi suất</div>
-        </div>
-        <div class="commitment-item">
-            <img src="https://store.storeimages.cdn-apple.com/1/as-images.apple.com/is/store-card-13-iphone-nav-202502_GEO_US?wid=400&hei=260&fmt=png-alpha&.v=dW5XbHI1eDVpd01qWUU4bFRtWGZXMGIwbkQ3THNNRjRsZmFuY3ZnUksrQTA2bGFaODVwaytiT1psSXc2dlhUWUwyZnhVM3hmakh4cEVIbk1pcnBIRXFpaVlBSTdOOXplUDUwZUNmQnR2OUxuakp5ZFBaaHhUOUJXVGFwbk9vT2k" alt="Giao nhanh">
+            <img src="https://static.vecteezy.com/system/resources/previews/021/595/691/non_2x/fast-delivery-truck-icon-lorry-with-quick-delivery-service-fast-product-delivery-design-illustration-free-png.png" alt="Giao nhanh">
             <div class="commitment-title">Giao hàng nhanh</div>
         </div>
     </div>
