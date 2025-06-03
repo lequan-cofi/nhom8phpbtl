@@ -102,7 +102,7 @@ $email = $user['Email'] ?? '';
         </div>
         <!-- Contact End -->
 
-    <div id="footer">
+    <div id="main-footer" style="margin-left: 58px;">
         <?php
             // Nạp nội dung footer từ partial
             $footerPath = APP_PATH . '/views/partials/footer_content.php';

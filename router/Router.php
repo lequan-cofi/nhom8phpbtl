@@ -30,6 +30,11 @@ class Router {
             $controllerName = 'CuahangController';
             $controllerFile = APP_PATH . '/controllers/' . $controllerName . '.php';
         }
+        // Chuyển hướng page=login sang Login_signupController
+        else if (strtolower($page) === 'login') {
+            $controllerName = 'Login_signupController';
+            $controllerFile = APP_PATH . '/controllers/' . $controllerName . '.php';
+        }
         // Chuyển hướng page=lienhe sang Lienhe_layoutController
         else if (strtolower($page) === 'lienhe') {
             $controllerName = 'Lienhe_layoutController';
@@ -74,7 +79,7 @@ class Router {
             $this->notFound("Controller file '{$controllerName}.php' không tìm thấy.");
         }
 
-        if ($_GET['page'] === 'cart' && $_GET['action'] === 'updateQuantity') {
+        if (($_GET['page'] ?? '') === 'cart' && ($_GET['action'] ?? '') === 'updateQuantity') {
             $controller = new GioHangController();
             $controller->updateQuantity();
             exit;

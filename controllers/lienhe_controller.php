@@ -41,7 +41,7 @@ class LienHe_Controller {
             'TrangThai' => 'Chưa xử lý'
         ];
         $result = $this->lienHeModel->create($data);
-        if ($result['success']) {
+        if ($result) {
             echo "<script>alert('Gửi liên hệ thành công!');window.location.href='".BASE_URL."/index.php?page=lienhe';</script>";
         } else {
             echo "<script>alert('Có lỗi xảy ra khi gửi liên hệ!');window.history.back();</script>";

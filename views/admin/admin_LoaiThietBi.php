@@ -1,17 +1,27 @@
-<?php require_once 'partials/header.php'; ?>
 <?php
+// Set headers first
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
+
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit(0);
 }
-require_once __DIR__ . '/../../controllers/LoaithietbiController.php';
+
+// Define BASE_URL if not defined
 if (!defined('BASE_URL')) {
     define('BASE_URL', 'https://' . $_SERVER['HTTP_HOST'] . '/iStore_PHP_Backend');
 }
+
+// Include required files
+require_once __DIR__ . '/../../controllers/LoaithietbiController.php';
+
+// Initialize controller
 $loaithietbiController = new LoaithietbiController();
 $deviceTypes = $loaithietbiController->getAll();
+
+// Now include the header
+require_once 'partials/header.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">

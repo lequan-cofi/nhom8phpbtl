@@ -1,17 +1,56 @@
 <?php require_once 'partials/header.php'; ?>
+<style>
+   /* Card mặc định */
+.card {
+    border: none;
+    border-radius: 16px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    background:rgb(189, 213, 238);
+}
+
+/* Hiệu ứng hover */
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Icon trong card */
+.card i {
+    color: #0d6efd; /* Màu xanh Bootstrap */
+}
+
+/* Tiêu đề card */
+.card-title {
+    font-size: 1.1rem;
+    color: #333;
+}
+
+/* Tùy chỉnh container nếu muốn giới hạn max width */
+.container {
+    max-width: 1200px;
+}
+
+.card i {
+    background:rgb(189, 213, 238);
+    padding: 10px;
+    border-radius: 50%;
+}
+/* Responsive fix nếu nhiều icon */
+@media (max-width: 768px) {
+    .card-title {
+        font-size: 1rem;
+    }
+    .card i {
+        font-size: 1.5rem;
+    }
+}
+   /* Khuyến mãi */
+
+</style>
 <div class="container py-5">
     <h2 class="mb-4">Bảng điều khiển Admin</h2>
     <div class="row g-4">
-        <div class="col-md-4">
-            <a href="admin_lienhe.php" class="text-decoration-none">
-                <div class="card shadow-sm h-100 text-center">
-                    <div class="card-body">
-                        <i class="fas fa-envelope fa-2x mb-2"></i>
-                        <h5 class="card-title">Quản lý liên hệ</h5>
-                    </div>
-                </div>
-            </a>
-        </div>
+        
         <div class="col-md-4">
             <a href="admin_phanhoi.php" class="text-decoration-none">
                 <div class="card shadow-sm h-100 text-center">
@@ -32,9 +71,7 @@
                 </div>
             </a>
         </div>
-        <div>
-
-        </div>
+        
         <div class="col-md-4">
             <a href="admin_blog.php" class="text-decoration-none">
                 <div class="card shadow-sm h-100 text-center">

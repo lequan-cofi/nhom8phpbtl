@@ -1,4 +1,6 @@
 <?php
+// Start session if not already started
+
 require_once __DIR__ . '/../../models/khuyenmaiModel.php';
 $kmModel = new KhuyenMaiModel();
 

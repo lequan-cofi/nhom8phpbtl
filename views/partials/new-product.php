@@ -66,7 +66,7 @@
                                 <i class="fa-solid fa-dong-sign" style="color: #4599e8;"></i>
                             </div>
                             <div class="add-product">
-                                <a href="<?php echo BASE_URL; ?>/index.php?page=product&action=detail&id=<?php echo $product['ID']; ?>" class="btn-flip" data-back="Thêm vào giỏ" data-front="Mua ngay"></a>
+                                <a href="<?php echo BASE_URL; ?>/index.php?page=product&action=detail&id=<?php echo $latestProduct['ID']; ?>" class="btn-flip" data-back="Thêm vào giỏ" data-front="Mua ngay"></a>
                             </div>
                             <div class="product-code">
                                 <div class="product-name">

@@ -142,8 +142,6 @@ if (!empty($_SESSION['user'])) {
         <div class="block"></div>
         <ul class="subnav-2">
             <li> <a href="<?php echo $accountUrl; ?>"> <i class="fa-regular fa-user"></i> </a> </li>
-            <li> <a href="#"> <i class="fa-solid fa-code-compare"></i> </a> </li>
-            <li> <a id="showWishlistBtnPlaceholder"> <i class="fa-regular fa-heart"></i> </a> </li>
             <li> <a class="last-item" href="<?php echo BASE_URL; ?>/index.php?page=cart"> <i class="fa-solid fa-cart-shopping"></i> </a> </li>
         </ul>
     </div>

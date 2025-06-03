@@ -152,8 +152,8 @@ if (file_exists($navigationPath)) {
                     <img src="https://iili.io/FHTMlUP.jpg" alt="Avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">
                 </div>
                 <div>
-                    <div class="account-name">Lê Xuân Thành Quân</div>
-                    <div class="account-phone">0836357898</div>
+                    <div class="account-name"><?= htmlspecialchars($user['Ten'] ?? '') ?></div>
+                    <div class="account-phone"><?= htmlspecialchars($user['SoDienThoai'] ?? '') ?></div>
                     <div><a class="account-link" href="?page=user&action=profile">Xem hồ sơ</a></div>
                 </div>
             </div>
